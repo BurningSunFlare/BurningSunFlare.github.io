@@ -5,3 +5,7 @@ p {
   #Fred {
     color: rgb(69, 107, 232);
   }
+
+  .red {
+    color: rgb(232, 69, 69);
+  }
