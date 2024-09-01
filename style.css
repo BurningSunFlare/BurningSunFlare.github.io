@@ -46,9 +46,9 @@ body {
 .flex-box {
     color: #000000;
     width: 100px;
-    height: 100px;
+    height: 50px;
     border: 2px solid #444;
-    background-color: lightyellow;
+    background-color: rgb(121, 121, 121);
     display: flex;
     justify-content: center;
     align-items: center;
