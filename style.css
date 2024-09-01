@@ -68,3 +68,11 @@ input, textarea {
     border: 1px solid #555555; /* Border color */
     padding: 10px;
 }
+a
+{
+    color:rgb(162, 100, 237);
+}
+a:hover
+{
+    color:rgb(202, 165, 245);
+}
