@@ -5,6 +5,14 @@ body {
     margin: 0; /* Remove default margin */
     padding: 0; /* Remove default padding */
 }
+h1 {text-align: center;}
+p {text-align: center;}
+div {text-align: center;}
+ul { text-align: center;
+    list-style-position: inside;}
+ol {text-align: center;
+    list-style-position: inside;}
+li {text-align: center;}
 
   #Fred {
     color: rgb(69, 107, 232);
