@@ -10,7 +10,7 @@ p {
     color: rgb(232, 69, 69);
   }
 
-  div.box {
+  .box {
     width: 200px; /* Width of the box */
     height: 100px; /* Height of the box */
     border: 2px solid black; /* Border around the box */
@@ -20,7 +20,7 @@ p {
     display: inline-block;
 }
 
-div.fancy-box {
+.fancy-box {
     width: 250px;
     height: 150px;
     border: 2px solid #333;
@@ -31,13 +31,13 @@ div.fancy-box {
     margin: 20px;
 }
 
-flex-box.container {
+.container {
     display: flex; /* Enables flexbox layout */
     justify-content: space-between; /* Distributes boxes with space between them */
     padding: 20px;
 }
 
-div.flex-box {
+.flex-box {
     width: 100px;
     height: 100px;
     border: 2px solid #444;
