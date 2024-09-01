@@ -9,3 +9,40 @@ p {
   div.red {
     color: rgb(232, 69, 69);
   }
+
+  div.box {
+    width: 200px; /* Width of the box */
+    height: 100px; /* Height of the box */
+    border: 2px solid black; /* Border around the box */
+    padding: 10px; /* Space inside the box, between the content and the border */
+    background-color: lightblue; /* Background color of the box */
+    margin: 20px; /* Space outside the box, separating it from other elements */
+    display: inline-block;
+}
+
+div.fancy-box {
+    width: 250px;
+    height: 150px;
+    border: 2px solid #333;
+    border-radius: 15px; /* Rounds the corners of the box */
+    padding: 20px;
+    background-color: lightgreen;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3); /* Adds a shadow to the box */
+    margin: 20px;
+}
+
+flex-box.container {
+    display: flex; /* Enables flexbox layout */
+    justify-content: space-between; /* Distributes boxes with space between them */
+    padding: 20px;
+}
+
+div.flex-box {
+    width: 100px;
+    height: 100px;
+    border: 2px solid #444;
+    background-color: lightyellow;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
