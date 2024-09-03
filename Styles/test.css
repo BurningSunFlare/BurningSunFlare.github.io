@@ -1,0 +1,23 @@
+#box1
+{
+    width: 200px;
+    height: 200px;
+    background-color: hsl(160, 76%, 65%);
+    position:fixed;
+    top:100px;
+    left:100px;
+}
+
+#box2
+{
+    width: 100px;
+    height: 100px;
+    background-color: rgb(127, 155, 255);
+    position:absolute;
+    top:100px;
+    left:100px;
+}
+.boxen
+{
+    width: 100px;
+}
