@@ -50,3 +50,10 @@ footer
 {
     clear:both;
 }
+@media screen and ( max-width:600px )
+{
+    aside, section, article
+    {
+        width:100%;
+    }
+}
