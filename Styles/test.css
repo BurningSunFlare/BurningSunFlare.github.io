@@ -1,9 +1,13 @@
+*
+{
+    box-sizing: border-box;
+}
 #box1
 {
     width: 200px;
     height: 200px;
     background-color: hsl(160, 76%, 65%);
-    position:fixed;
+    position:static;
     top:100px;
     left:100px;
 }
@@ -20,4 +24,29 @@
 .boxen
 {
     width: 100px;
+}
+aside
+{
+    width:20%;
+    float:left;
+    padding:10px;
+    text-align: center;
+}
+section
+{
+    width:40%;
+    float:left;
+    padding:10px;
+    text-align: center;
+}
+article
+{
+    width:40%;
+    float:left;
+    padding:10px;
+    text-align: center;
+}
+footer
+{
+    clear:both;
 }
