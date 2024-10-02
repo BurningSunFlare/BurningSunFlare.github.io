@@ -10,6 +10,7 @@
     position:static;
     top:100px;
     left:100px;
+    margin-top: 50px;
 }
 
 #box2
@@ -17,7 +18,7 @@
     width: 100px;
     height: 100px;
     background-color: rgb(127, 155, 255);
-    position:absolute;
+    position:static;
     top:100px;
     left:100px;
 }
@@ -57,3 +58,4 @@ footer
         width:100%;
     }
 }
+
