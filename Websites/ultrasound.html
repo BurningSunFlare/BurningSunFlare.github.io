@@ -378,45 +378,35 @@ function exportURLs() {
   let exportStr = "";
 
   document.querySelectorAll('.collection .item').forEach(item => {
-    const inputs = item.querySelectorAll('input');  // Get all inputs in the item
-    const soundNameInput = inputs[0];  // First input for sound name (if applicable)
-    const loopStartInput = inputs[1];  // Second input for loop start
-    const loopEndInput = inputs[2];  // Third input for loop end
-    const offsetInput = inputs[3];  // Fourth input for offset
-    const loopTypeSelect = item.querySelector('select');  // Select for loop type
-    const backwardsCheckbox = item.querySelector('input[type="checkbox"]');  // Checkbox for backwards
-    const linkInput = inputs[5];  // Fifth input for link (assuming it's in the right order)
-    const exportCheckbox = item.querySelector('input[type="checkbox"]:last-of-type');  // Export checkbox
+    const inputs = item.querySelectorAll('input');
+    const soundNameInput = inputs[0];
+    const loopStartInput = inputs[1];
+    const loopEndInput = inputs[2];
+    const offsetInput = inputs[3];
+    const loopTypeSelect = item.querySelector('select');
+    const backwardsCheckbox = item.querySelector('input[type="checkbox"]');
+    const linkInput = inputs[5];
+    const exportCheckbox = item.querySelector('input[type="checkbox"]:last-of-type');
 
-    // Debugging: Log the inputs to see if they exist
-    console.log("Sound Name:", soundNameInput ? soundNameInput.value : "Not found");
-    console.log("Loop Start:", loopStartInput ? loopStartInput.value : "Not found");
-    console.log("Loop End:", loopEndInput ? loopEndInput.value : "Not found");
-    console.log("Offset:", offsetInput ? offsetInput.value : "Not found");
-    console.log("Link:", linkInput ? linkInput.value : "Not found");
-    console.log("Export:", exportCheckbox ? exportCheckbox.checked : "Not found");
-
-    // Ensure loopStart, loopEnd, and offset have default values when they're missing
     if (exportCheckbox && exportCheckbox.checked) {
+      const soundName = encodeURIComponent(soundNameInput ? soundNameInput.value : '');
       const loopStart = loopStartInput ? parseInt(loopStartInput.value) || 0 : 0;
       const loopEnd = loopEndInput ? parseInt(loopEndInput.value) || 0 : 0;
       const offset = offsetInput ? parseInt(offsetInput.value) || 0 : 0;
-      const loopType = loopTypeSelect ? loopTypeSelect.value : 'd0'; // Default loopType if not selected
-      const backwards = backwardsCheckbox ? ",e" : "";
-      const link = linkInput ? linkInput.value : ''; // Ensure we get the correct link from the second input
+      const loopType = loopTypeSelect ? loopTypeSelect.value : 'd0';
+      const backwards = backwardsCheckbox && backwardsCheckbox.checked ? 1 : 0;
+      const link = linkInput ? linkInput.value : '';
 
-      // Append the formatted string for this item to the exportStr
-      exportStr += `|!a${loopStart},b${loopEnd},c${offset},${loopType}${backwards}!${link}`;
+      const fullUrl = `|!a${loopStart},b${loopEnd},c${offset},${loopType}${backwards}!${link}`;
+      exportStr += fullUrl;
     }
   });
 
-  // If there are items selected for export, trigger the URL redirection
-  if (exportStr) {
-    window.location.href = baseUrl + exportStr;
-  } else {
-    alert("No items selected for export.");
-  }
+  console.log(baseUrl + exportStr); // Output the URLs in console for testing
+  window.location.href = baseUrl + exportStr;
+  //alert("Exported URLs:\n" + exportStr); // Display exported URLs in an alert for now
 }
+
 
 
 function toggleItemsVisibility(arrow) {
