@@ -6,136 +6,36 @@
   <title>JSON Box System with Image Upload and Save/Load</title>
   <style>
     /* Basic styling for layout */
-    body {
-    background-color: #313131; /* Dark gray/black background */
-    color: #ffffff; /* Light text color */
-    font-family: Arial, sans-serif;
-    margin: 0; /* Remove default margin */
-    padding: 0; /* Remove default padding */
-}
+    body { font-family: Arial, sans-serif; }
     .box { border: 1px solid #ccc; padding: 10px; margin: 10px; }
     .hidden { display: none; }
     .collection, .item { border: 1px dashed #999; padding: 5px; margin-top: 5px; }
-    a
-{
-    text-align: center;
-    color:rgb(162, 100, 237);
-}
-a:hover
-{
-    text-align: center;
-    color:rgb(202, 165, 245);
-}
-.frame
-{
-  background-color: #56209e43; /* Green */
-  border: none;
-  border-radius: 2px;
-  color: rgb(22, 67, 127);
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  transition-duration: 0.4s;
-}
-.frame:hover {
-  background-color: #0e11106d; /* Green */
-  color: white;
-}
-.upload
-{
-  background-color: #56209e43; /* Green */
-  border: none;
-  border-radius: 2px;
-  color: rgb(147, 194, 255);
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  transition-duration: 0.4s;
-}
-.upload:hover {
-  background-color: #0e11106d; /* Green */
-  color: white;
-}
-.button1
-{
-  background-color: #04AA6D; /* Green */
-  border: none;
-  border-radius: 2px;
-  color: rgb(22, 67, 127);
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  transition-duration: 0.4s;
-}
-.button1:hover {
-  background-color: #0e1110; /* Green */
-  color: white;
-}
-
-.button2
-{
-  background-color: #04AA6D; /* Green */
-  border: none;
-  width: 120px;
-  height: 60px;
-  margin-top: 25px;
-  border-radius: 2px;
-  color: rgb(22, 67, 127);
-  padding: 20px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  transition-duration: 0.4s;
-}
-.button2:hover {
-  background-color: #2f055f; /* Green */
-  color: rgb(0, 146, 250);
-}
-
-.tooltip .tooltiptext {
-  width: 120px;
-  top: 100%;
-  left: 50%;
-  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
-}
-
-h2 {text-align: center;}
   </style>
 </head>
 <body>
-<hr>
-<h2>Ultrasound</h2>
-<hr>
+
+<h2>Box System</h2>
+
 <div>
-  <button onclick="toggleMode()" class="button1">Toggle Edit/Preview Mode</button>
-  <button onclick="createBox()" class="button1">Create Box</button>
-  <button onclick="uploadJSON()" class="button1">Upload JSON</button>
+  <button onclick="toggleMode()">Toggle Edit/Preview Mode</button>
+  <button onclick="createBox()">Create Box</button>
+  <button onclick="uploadJSON()">Upload JSON</button>
   <input type="file" id="fileInput" class="hidden" accept=".json" onchange="loadJSON(this.files)">
-  <button onclick="downloadJSON()" class="button1">Save JSON</button>
+  <button onclick="downloadJSON()">Save JSON</button>
 </div>
 
 <div id="mainBox" class="box hidden">
   <h3 id="mainTitle" contenteditable="true">Default Title</h3>
-  <img id="mainImage" src="/Images/Icon/Kittyd.gif" alt="Main Image" width="256" height="256" class="frame">
-  <br>
-  <input type="file" onchange="updateImage(this, 'mainImage')" class="upload">
+  <img id="mainImage" src="images/empty.gif" alt="Main Image" width="256" height="256">
+  <input type="file" onchange="updateImage(this, 'mainImage')">
   <p id="mainCredits" contenteditable="true">This is where the credits go</p>
   <button onclick="addCollection()">Add Collection</button>
   <div id="collectionsContainer"></div>
 </div>
 
 <div>
-  <button onclick="exportURLs()" class = "button2">Load Samples</button>
-  <hr>
-  <input type="text" id="exportUrlInput" placeholder="Main Url" class="tooltip">
-  <span class="tooltiptext">Grab your base url. Abyssbox or Ultrabox for example, then click Load Samples</span>
+  <button onclick="exportURLs()">Load Samples</button>
+  <input type="text" id="exportUrlInput" placeholder="Enter URL here">
 </div>
 
 <script>
@@ -167,16 +67,14 @@ function addCollection(data = null) {
   container.innerHTML = `
     <h4 contenteditable="true">${data ? data.title : 'Collection Title'}</h4>
     <p contenteditable="true">${data ? data.description : 'Collection Description'}</p>
-    <img id="${collectionImageId}" src="${data ? data.image : '/Images/Icon/missing.gif'}" alt="Collection Image" width="128" height="128" class="frame">
-    <br>
-    <input type="file" onchange="updateImage(this, '${collectionImageId}')" class="upload"">
+    <img id="${collectionImageId}" src="${data ? data.image : 'images/empty.gif'}" alt="Collection Image" width="256" height="256">
+    <input type="file" onchange="updateImage(this, '${collectionImageId}')">
     <p contenteditable="true">${data ? data.credits : 'Collection Credits'}</p>
     <button onclick="addItem(this)">Add Item</button>
-    <div class="items-container hidden"></div> <!-- Items container is hidden initially -->
-    <span class="dropdown-arrow" onclick="toggleItemsVisibility(this)">&#9660;</span> <!-- Dropdown arrow -->
+    <div class="itemsContainer"></div>
   `;
 
-  const itemsContainer = container.querySelector(".items-container");
+  const itemsContainer = container.querySelector(".itemsContainer");
   if (data && data.items) {
     data.items.forEach(item => addItem(container.querySelector('button'), item));
   }
@@ -231,11 +129,11 @@ function populateData(jsonData) {
     return;
   }
 
-  const mainData = jsonData;
+  const mainData = jsonData; // Directly use jsonData instead of jsonData.main
 
   // Populate the main box fields
   document.getElementById("mainTitle").textContent = mainData.title || "Default Title";
-  document.getElementById("mainImage").src = mainData.image || "/Images/Icon/missing.gif";
+  document.getElementById("mainImage").src = mainData.image || "images/empty.gif";
   document.getElementById("mainCredits").textContent = mainData.credits || "This is where the credits go";
 
   // Clear previous collections if any
@@ -243,50 +141,51 @@ function populateData(jsonData) {
   collectionsContainer.innerHTML = "";
 
   // Loop through collections and populate them
-  // Loop through collections and populate them
-if (mainData.collections && mainData.collections.length > 0) {
-  mainData.collections.forEach(collectionData => {
-    const collectionElement = document.createElement("div");
-    collectionElement.classList.add("collection");
+  if (mainData.collections && mainData.collections.length > 0) {
+    mainData.collections.forEach(collectionData => {
+      const collectionElement = document.createElement("div");
+      collectionElement.classList.add("collection");
 
-    collectionElement.innerHTML = `
-      <h4>${collectionData.title || "Collection Title"}</h4>
-      <p>${collectionData.description || "Collection Description"}</p>
-      <img src="${collectionData.image || "/Images/Icon/missing.gif"}" alt="Collection Image" width="128" height="128">
-      <p>${collectionData.credits || "Collection Credits"}</p>
-      <div class="items-container hidden"></div>
-      <span class="dropdown-arrow" onclick="toggleItemsVisibility(this)">&#9660;</span>
-    `;
+      collectionElement.innerHTML = `
+        <h4>${collectionData.title || "Collection Title"}</h4>
+        <p>${collectionData.description || "Collection Description"}</p>
+        <img src="${collectionData.image || "images/empty.gif"}" alt="Collection Image">
+        <p>${collectionData.credits || "Collection Credits"}</p>
+        <div class="items-container"></div>
+      `;
 
-    const itemsContainer = collectionElement.querySelector(".items-container");
-    if (collectionData.items && collectionData.items.length > 0) {
-      collectionData.items.forEach(item => {
-        const itemElement = document.createElement("div");
-        itemElement.classList.add("item");
+      // Populate collection items if available
+      const itemsContainer = collectionElement.querySelector(".items-container");
+      if (collectionData.items && collectionData.items.length > 0) {
+        collectionData.items.forEach(item => {
+          const itemElement = document.createElement("div");
+          itemElement.classList.add("item");
 
-        itemElement.innerHTML = `
-          <input type="text" value="${item.soundName || ''}" placeholder="Sound Name">
-          <input type="number" value="${item.loopStart || 0}" placeholder="Loop Start">
-          <input type="number" value="${item.loopEnd || 0}" placeholder="Loop End">
-          <input type="number" value="${item.offset || 0}" placeholder="Offset">
-          <select>
-            <option value="d0" ${item.loopType === 'd0' ? 'selected' : ''}>Loop</option>
-            <option value="d1" ${item.loopType === 'd1' ? 'selected' : ''}>Ping Pong</option>
-            <option value="d2" ${item.loopType === 'd2' ? 'selected' : ''}>Play Once</option>
-            <option value="d3" ${item.loopType === 'd3' ? 'selected' : ''}>Loop Play Once</option>
-          </select>
-          <input type="checkbox" ${item.backwards ? 'checked' : ''}> Backwards
-          <input type="text" value="${item.link || ''}" placeholder="Item Link">
-          <input type="checkbox" ${item.export ? 'checked' : ''}> Export
-        `;
-        itemsContainer.appendChild(itemElement);
-      });
-    }
+          itemElement.innerHTML = `
+            <input type="text" value="${item.soundName || ''}" placeholder="Sound Name">
+            <input type="number" value="${item.loopStart || 0}" placeholder="Loop Start">
+            <input type="number" value="${item.loopEnd || 0}" placeholder="Loop End">
+            <input type="number" value="${item.offset || 0}" placeholder="Offset">
+            <select>
+              <option value="d0" ${item.loopType === "d0" ? "selected" : ""}>Loop</option>
+              <option value="d1" ${item.loopType === "d1" ? "selected" : ""}>Ping Pong</option>
+              <option value="d2" ${item.loopType === "d2" ? "selected" : ""}>Play Once</option>
+              <option value="d3" ${item.loopType === "d3" ? "selected" : ""}>Loop Play Once</option>
+            </select>
+            <input type="checkbox" ${item.backwards ? "checked" : ""}> Backwards
+            <input type="text" value="${item.link || ''}" placeholder="Link">
+            <input type="checkbox" ${item.export ? "checked" : ""}> Export
+          `;
 
-    collectionsContainer.appendChild(collectionElement);
-  });
-}
+          itemsContainer.appendChild(itemElement);
+        });
+      }
 
+      collectionsContainer.appendChild(collectionElement);
+    });
+  } else {
+    alert("No collections found in the JSON data.");
+  }
 }
 
 
@@ -294,7 +193,7 @@ if (mainData.collections && mainData.collections.length > 0) {
 function downloadJSON() {
   const mainBox = {
     title: document.getElementById("mainTitle") ? document.getElementById("mainTitle").textContent : "Default Title",
-    image: document.getElementById("mainImage") ? document.getElementById("mainImage").src : "/Images/Icon/missing.gif",
+    image: document.getElementById("mainImage") ? document.getElementById("mainImage").src : "images/empty.gif",
     credits: document.getElementById("mainCredits") ? document.getElementById("mainCredits").textContent : "This is where the credits go",
     collections: []
   };
@@ -304,7 +203,7 @@ function downloadJSON() {
     const collectionData = {
       title: collection.querySelector('h4') ? collection.querySelector('h4').textContent : "Collection Title",
       description: collection.querySelector('p:nth-of-type(1)') ? collection.querySelector('p:nth-of-type(1)').textContent : "Collection Description",
-      image: collection.querySelector('img') ? collection.querySelector('img').src : "/Images/Icon/missing.gif",
+      image: collection.querySelector('img') ? collection.querySelector('img').src : "images/empty.gif",
       credits: collection.querySelector('p:nth-of-type(2)') ? collection.querySelector('p:nth-of-type(2)').textContent : "Collection Credits",
       items: []  // Initialize an empty array for items
     };
@@ -374,62 +273,29 @@ function downloadJSON() {
 
 
 function exportURLs() {
-  const baseUrl = document.getElementById("exportUrlInput") ? document.getElementById("exportUrlInput").value : "";
+  const baseUrl = document.getElementById("exportUrlInput").value;
   let exportStr = "";
 
   document.querySelectorAll('.collection .item').forEach(item => {
-    const inputs = item.querySelectorAll('input');  // Get all inputs in the item
-    const soundNameInput = inputs[0];  // First input for sound name (if applicable)
-    const loopStartInput = inputs[1];  // Second input for loop start
-    const loopEndInput = inputs[2];  // Third input for loop end
-    const offsetInput = inputs[3];  // Fourth input for offset
-    const loopTypeSelect = item.querySelector('select');  // Select for loop type
-    const backwardsCheckbox = item.querySelector('input[type="checkbox"]');  // Checkbox for backwards
-    const linkInput = inputs[5];  // Fifth input for link (assuming it's in the right order)
-    const exportCheckbox = item.querySelector('input[type="checkbox"]:last-of-type');  // Export checkbox
-
-    // Debugging: Log the inputs to see if they exist
-    console.log("Sound Name:", soundNameInput ? soundNameInput.value : "Not found");
-    console.log("Loop Start:", loopStartInput ? loopStartInput.value : "Not found");
-    console.log("Loop End:", loopEndInput ? loopEndInput.value : "Not found");
-    console.log("Offset:", offsetInput ? offsetInput.value : "Not found");
-    console.log("Link:", linkInput ? linkInput.value : "Not found");
-    console.log("Export:", exportCheckbox ? exportCheckbox.checked : "Not found");
-
-    // Ensure loopStart, loopEnd, and offset have default values when they're missing
+    const exportCheckbox = item.querySelector('input[type="checkbox"]:last-of-type');
     if (exportCheckbox && exportCheckbox.checked) {
-      const loopStart = loopStartInput ? parseInt(loopStartInput.value) || 0 : 0;
-      const loopEnd = loopEndInput ? parseInt(loopEndInput.value) || 0 : 0;
-      const offset = offsetInput ? parseInt(offsetInput.value) || 0 : 0;
-      const loopType = loopTypeSelect ? loopTypeSelect.value : 'd0'; // Default loopType if not selected
-      const backwards = backwardsCheckbox ? ",e" : "";
-      const link = linkInput ? linkInput.value : ''; // Ensure we get the correct link from the second input
+      const loopStart = item.querySelector('input[type="number"]:nth-of-type(1)')?.value || 0;
+      const loopEnd = item.querySelector('input[type="number"]:nth-of-type(2)')?.value || 0;
+      const offset = item.querySelector('input[type="number"]:nth-of-type(3)')?.value || 0;
+      const loopType = item.querySelector('select')?.value || 'd0';
+      const backwards = item.querySelector('input[type="checkbox"]').checked ? ",e" : "";
+      const link = item.querySelector('input[type="text"]:last-of-type').value || "";
 
-      // Append the formatted string for this item to the exportStr
       exportStr += `|!a${loopStart},b${loopEnd},c${offset},${loopType}${backwards}!${link}`;
     }
   });
 
-  // If there are items selected for export, trigger the URL redirection
   if (exportStr) {
     window.location.href = baseUrl + exportStr;
   } else {
     alert("No items selected for export.");
   }
 }
-
-
-function toggleItemsVisibility(arrow) {
-  const itemsContainer = arrow.parentElement.querySelector(".items-container");
-  if (itemsContainer.classList.contains("hidden")) {
-    itemsContainer.classList.remove("hidden");
-    arrow.innerHTML = "&#9650;"; // Change arrow to "up" when showing items
-  } else {
-    itemsContainer.classList.add("hidden");
-    arrow.innerHTML = "&#9660;"; // Change arrow to "down" when hiding items
-  }
-}
-
 </script>
 
 </body>
