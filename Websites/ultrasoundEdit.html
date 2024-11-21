@@ -107,17 +107,76 @@ a:hover
 }
 
 h2 {text-align: center;}
+
+#shadowBox {
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.2);
+    /* Black w/opacity/see-through */
+    border: 3px solid;
+}
+
+.rainbow {
+    text-align: center;
+    text-decoration: underline;
+    font-size: 32px;
+    font-family: monospace;
+    letter-spacing: 5px;
+}
+.rainbow_text_animated {
+    background: linear-gradient(to right, #6666ff, #0099ff , #00ff00, #ff3399, #6666ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: rainbow_animation 10s ease-in-out infinite;
+    background-size: 400% 100%;
+}
+
+@keyframes rainbow_animation {
+    0%,100% {
+        background-position: 0 0;
+    }
+
+    50% {
+        background-position: 100% 0;
+    }
+}
   </style>
 </head>
 <body>
 <hr>
-<h2>Ultrasound</h2>
+<h2 class="rainbow rainbow_text_animated">Ultrasound DEVELOPER</h2>
+<form id="password-form">
+    <label for="password">Enter Password:</label>
+    <input type="password" id="password" required>
+    <button type="submit">Submit</button>
+</form>
+<p id="error-message" class="hidden">Incorrect password, please try again.</p>
+
+<script>
+    document.getElementById("password-form").addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent form from refreshing the page
+        const passwordInput = document.getElementById("password").value;
+
+        if (passwordInput === "Pineapple") {
+            //alert("Password correct! Welcome.");
+            const errorMessage = document.getElementById("error-message");
+            errorMessage.classList.remove("hidden");
+            errorMessage.classList.add("hidden");
+            uploadJSON()
+        } else {
+            const errorMessage = document.getElementById("error-message");
+            errorMessage.classList.remove("hidden");
+            document.getElementById("password").value = ""; // Clear input
+            document.getElementById("password").focus(); // Refocus on input
+        }
+    });
+</script>
 <hr>
 <div>
   <!-- <button onclick="toggleMode()" class="button1">Toggle Edit/Preview Mode</button> -->
   <!-- button onclick="createBox()" class="button1">Create Box</button -->
-  
-  <button onclick="uploadJSON()" class="button1">Upload JSON</button>
+  <!-- button onclick="uploadJSON()" class="button1" id="imhidden">Upload JSON</button -->
   <input type="file" id="fileInput" class="hidden" accept=".json" onchange="loadJSON(this.files)">
   <button onclick="downloadJSON()" class="button1">Save JSON</button>
 </div>
@@ -212,7 +271,7 @@ function addItem(button, data = null) {
 }
 
 function uploadJSON() {
-  document.getElementById("fileInput").click();
+    document.getElementById("fileInput").click();
 }
 
 function loadJSON(files) {
@@ -244,51 +303,10 @@ function populateData(jsonData) {
   const collectionsContainer = document.getElementById("collectionsContainer");
   collectionsContainer.innerHTML = "";
 
-  // Loop through collections and populate them
-  // Loop through collections and populate them
-if (mainData.collections && mainData.collections.length > 0) {
-  mainData.collections.forEach(collectionData => {
-    const collectionElement = document.createElement("div");
-    collectionElement.classList.add("collection");
-
-    collectionElement.innerHTML = `
-      <h4>${collectionData.title || "Collection Title"}</h4>
-      <p>${collectionData.description || "Collection Description"}</p>
-      <img src="${collectionData.image || "/Images/Icon/missing.gif"}" alt="Collection Image" width="128" height="128">
-      <p>${collectionData.credits || "Collection Credits"}</p>
-      <div class="items-container hidden"></div>
-      <span class="dropdown-arrow" onclick="toggleItemsVisibility(this)">&#9660;</span>
-    `;
-
-    const itemsContainer = collectionElement.querySelector(".items-container");
-    if (collectionData.items && collectionData.items.length > 0) {
-      collectionData.items.forEach(item => {
-        const itemElement = document.createElement("div");
-        itemElement.classList.add("item");
-
-        itemElement.innerHTML = `
-          <input type="text" value="${item.soundName || ''}" placeholder="Sound Name">
-          <input type="number" value="${item.loopStart || 0}" placeholder="Loop Start">
-          <input type="number" value="${item.loopEnd || 0}" placeholder="Loop End">
-          <input type="number" value="${item.offset || 0}" placeholder="Offset">
-          <select>
-            <option value="d0" ${item.loopType === 'd0' ? 'selected' : ''}>Loop</option>
-            <option value="d1" ${item.loopType === 'd1' ? 'selected' : ''}>Ping Pong</option>
-            <option value="d2" ${item.loopType === 'd2' ? 'selected' : ''}>Play Once</option>
-            <option value="d3" ${item.loopType === 'd3' ? 'selected' : ''}>Loop Play Once</option>
-          </select>
-          <input type="checkbox" ${item.backwards ? 'checked' : ''}> Backwards
-          <input type="text" value="${item.link || ''}" placeholder="Item Link">
-          <input type="checkbox" ${item.export ? 'checked' : ''}> Export
-        `;
-        itemsContainer.appendChild(itemElement);
-      });
-    }
-
-    collectionsContainer.appendChild(collectionElement);
-  });
-}
-
+  // Populate collections and their items
+  if (mainData.collections && mainData.collections.length > 0) {
+    mainData.collections.forEach(collectionData => addCollection(collectionData));
+  }
 }
 
 
