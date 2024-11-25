@@ -3,20 +3,136 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon"; type="image/png"; href="/Images/Icon/Main.png">
   <title>JSON Box System with Image Upload and Save/Load</title>
   <style>
-    /* Basic styling for layout */
     body {
-    background-color: #313131; /* Dark gray/black background */
-    color: #ffffff; /* Light text color */
-    font-family: Arial, sans-serif;
+      background: linear-gradient(to left, #0e052e, #1c1c1c);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: lightskyblue;
+    animation: body 10s ease-in-out infinite;
+    background-size: 400% 100%;
     margin: 0; /* Remove default margin */
     padding: 0; /* Remove default padding */
+    box-shadow: 5px 10px 8px hsl(241, 86%, 11%)
 }
-    .box { border: 1px solid #ccc; padding: 10px; margin: 10px; }
+div{box-shadow: 5px 10px 8px hsl(241, 86%, 11%)}
+
+p{ text-align: center; }
+
+@keyframes body {
+    0%,100% {
+        background-position: 0 0;
+    }
+
+    50% {
+        background-position: 100% 0;
+    }
+}
+
+    .box { border: 1px solid #34179d; padding: 10px; margin: 10px; background-color: hsl(211, 94%, 6%); box-shadow: 5px 10px 8px hsl(241, 86%, 11%) }
     .hidden { display: none; }
-    .collection, .item { border: 1px dashed #999; padding: 5px; margin-top: 5px; }
-    a
+    .collection, .item { border: 1px dashed #2959c9; padding: 5px; margin-top: 5px; box-shadow: 5px 6px 8px #0d1f4885 }
+    .inbox
+    {
+      background-color: #56209e43;
+      color: rgb(147, 194, 255);
+      border: 2px solid #4a297e;
+      border-radius: 8px;
+    }
+
+    .inbox:hover
+    {
+      border-color: #7426b3;
+    }
+
+    .inbox:focus
+    {
+        outline: 2px solid #7426b3;
+        font-weight:bold;
+        color: rgb(147, 255, 194);
+    }
+
+    .button3
+    {
+      background-color: #56209e43;
+      color: rgb(147, 194, 255);
+      border: 2px solid #4a297e;
+    }
+
+    .button3:hover
+    {
+      border-color: lightblue;
+    }
+
+
+    .short
+    {
+      width: 75px;
+    }
+    .semishort
+    {
+      width: 90px;
+    }
+    .semishort:focus
+    {
+      color:lightblue;
+      background-color: #42005c;
+    }
+    .tick
+    {
+      accent-color: green;
+    }
+    .tick:not(:checked)
+    {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      -o-appearance: none;
+      appearance:none;
+      width: 10px;
+      height: 10px;
+      background-color: rgb(171, 9, 9);
+      border: 0px dotted #931414;
+      color: red;
+      content: "x";
+    }
+    
+.rainbow_text_animated
+{
+    background: linear-gradient(to right, #6666ff, #0099ff , #00ff00, #ff3399, #6666ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: rainbow_animation 10s ease-in-out infinite;
+    background-size: 400% 100%;
+}
+.rainbow
+{
+    text-align: center;
+    text-decoration: underline;
+    font-size: 32px;
+    font-family: monospace;
+    letter-spacing: 5px;
+}
+
+.rainbow_text_animated
+{
+    background: linear-gradient(to right, #6666ff, #0099ff , #00ff00, #ff3399, #6666ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: rainbow_animation 10s ease-in-out infinite;
+    background-size: 400% 100%;
+}
+hr
+{
+  background: linear-gradient(to right, #3b1194, #22095a);
+  height: 5px;
+  border:0
+}
+
+a
 {
     text-align: center;
     color:rgb(162, 100, 237);
@@ -28,7 +144,7 @@ a:hover
 }
 .frame
 {
-  background-color: #56209e43; /* Green */
+  background-color: #56209e43;
   border: none;
   border-radius: 2px;
   color: rgb(22, 67, 127);
@@ -107,11 +223,16 @@ a:hover
 }
 
 h2 {text-align: center;}
+.everything
+{
+  color:red;
+  border-color: red;
+}
   </style>
 </head>
 <body>
 <hr>
-<h2>Ultrasound</h2>
+<h2 class=>Ultrasound</h2>
 <hr>
 <div>
   <!-- <button onclick="toggleMode()" class="button1">Toggle Edit/Preview Mode</button> -->
@@ -128,19 +249,24 @@ h2 {text-align: center;}
   <br>
   <input type="file" onchange="updateImage(this, 'mainImage')" class="upload">
   <p id="mainCredits" contenteditable="true">This is where the credits go</p>
-  <button onclick="addCollection()">Add Collection</button>
+  <button class="button3" onclick="addCollection()">Add Collection</button>
   <div id="collectionsContainer"></div>
 </div>
 
 <div>
-  <button onclick="exportURLs()" class = "button2">Load Samples</button>
   <hr>
-  <input type="text" id="exportUrlInput" placeholder="Main Url" class="tooltip">
+  <button onclick="Ultrabox()" class = "button3">Ultrabox</button>
+  <button onclick="Abyssbox()" class = "button3">Abyssbox</button>
+  <br>
+  <input class="inbox" type="text" id="exportUrlInput" placeholder="Main Url" class="tooltip">
   <span class="tooltiptext">Grab your base url. Abyssbox or Ultrabox for example, then click Load Samples</span>
+  <br>
+  <button onclick="exportURLs()" class = "button3">Load Samples</button>
 </div>
 
 <script>
 let isEditMode = true;
+let totalitems = 1;
 
 function toggleMode() {
   isEditMode = !isEditMode;
@@ -172,7 +298,7 @@ function addCollection(data = null) {
     <br>
     <input type="file" onchange="updateImage(this, '${collectionImageId}')" class="upload"">
     <p contenteditable="true">${data ? data.credits : 'Collection Credits'}</p>
-    <button onclick="addItem(this)">Add Item</button>
+    <button class="button3" onclick="addItem(this)">Add Item</button>
     <div class="items-container hidden"></div> <!-- Items container is hidden initially -->
     <span class="dropdown-arrow" onclick="toggleItemsVisibility(this)">&#9660;</span> <!-- Dropdown arrow -->
   `;
@@ -190,21 +316,21 @@ function addItem(button, data = null) {
   itemContainer.classList.add("item");
 
   itemContainer.innerHTML = `
-    <label>Sound Name: <input type="text" value="${data ? data.soundName : ''}"></label>
-    <label>Loop Start: <input type="number" value="${data ? data.loopStart : 0}"></label>
-    <label>Loop End: <input type="number" value="${data ? data.loopEnd : 0}"></label>
-    <label>Offset: <input type="number" value="${data ? data.offset : 0}"></label>
+    <label>Sound Name: <input type="text" value="${data ? data.soundName : ''}"class="inbox"></label>
+    <label>Loop Start: <input type="number" value="${data ? data.loopStart : 0}"class="inbox short"></label>
+    <label>Loop End: <input type="number" value="${data ? data.loopEnd : 0}"class="inbox short"></label>
+    <label>Offset: <input type="number" value="${data ? data.offset : 0}"class="inbox short"></label>
     <label>Loop Type: 
-      <select>
+      <select class = "inbox semishort">
         <option value="d0" ${data && data.loopType === 'd0' ? 'selected' : ''}>Loop</option>
         <option value="d1" ${data && data.loopType === 'd1' ? 'selected' : ''}>Ping Pong</option>
         <option value="d2" ${data && data.loopType === 'd2' ? 'selected' : ''}>Play Once</option>
         <option value="d3" ${data && data.loopType === 'd3' ? 'selected' : ''}>Loop Play Once</option>
       </select>
     </label>
-    <label>Backwards: <input type="checkbox" ${data && data.backwards ? 'checked' : ''}></label><br>
-    <label>Link: <input type="text" placeholder="Enter item link" value="${data ? data.link : ''}"></label>
-    <label>N/A: <input type="checkbox" ${data && data.export ? 'checked' : ''}></label>
+    <label>Backwards: <input type="checkbox" ${data && data.backwards ? 'checked' : ''}class="tick"></label><br>
+    <label>Link: <input type="text" placeholder="Enter item link" value="${data ? data.link : ''}"class="inbox"></label>
+    <label> <input type="checkbox" ${data && data.export ? 'checked' : ''} class="hidden"></label>
   `;
   //<label>Export: <input type="checkbox" ${data && data.export ? 'checked' : ''}></label>
 
@@ -267,21 +393,22 @@ if (mainData.collections && mainData.collections.length > 0) {
         itemElement.classList.add("item");
 
         itemElement.innerHTML = `
-          <input type="text" value="${item.soundName || ''}" placeholder="Sound Name">
-          <input type="number" value="${item.loopStart || 0}" placeholder="Loop Start">
-          <input type="number" value="${item.loopEnd || 0}" placeholder="Loop End">
-          <input type="number" value="${item.offset || 0}" placeholder="Offset">
-          <select>
+          <input class="button_sound inbox all${totalitems} everything collection_sound${totalitems}" type="text" value="${item.soundName || ''}" placeholder="Sound Name">
+          <input class="button_loopstart inbox short all${totalitems} everything collection_loopstart${totalitems}" type="number" value="${item.loopStart || 0}" placeholder="Loop Start">
+          <input class="button_loopend inbox short all${totalitems} everything collection_loopend${totalitems}" type="number" value="${item.loopEnd || 0}" placeholder="Loop End">
+          <input class="button_offset inbox short all${totalitems} everything collection_offset${totalitems}" type="number" value="${item.offset || 0}" placeholder="Offset">
+          <select class="button_loop inbox semishort all${totalitems} everything collection_loop${totalitems}">
             <option value="d0" ${item.loopType === 'd0' ? 'selected' : ''}>Loop</option>
             <option value="d1" ${item.loopType === 'd1' ? 'selected' : ''}>Ping Pong</option>
             <option value="d2" ${item.loopType === 'd2' ? 'selected' : ''}>Play Once</option>
             <option value="d3" ${item.loopType === 'd3' ? 'selected' : ''}>Loop Play Once</option>
           </select>
-          <input type="checkbox" ${item.backwards ? 'checked' : ''}> Backwards
-          <input type="text" value="${item.link || ''}" placeholder="Item Link">
-          <input type="checkbox" ${item.export ? 'checked' : ''}> Export
+          <input class="button_backward tick all${totalitems} everything collection_backward${totalitems}" type="checkbox" ${item.backwards ? 'checked' : ''}> Backwards
+          <input class="button_link inbox semishort all${totalitems} everything collection_link${totalitems}" type="text" value="${item.link || ''}" placeholder="Item Link">
+          <input class="button_export tick checkbox all${totalitems} everything collection_export${totalitems}" type="checkbox" ${item.export ? 'checked' : ''}> Export
         `;
         itemsContainer.appendChild(itemElement);
+        totalitems++;
       });
     }
 
@@ -369,11 +496,15 @@ function downloadJSON() {
 }
 
 
+function Ultrabox()
+{
+  document.getElementById("exportUrlInput").value = "https://ultraabox.github.io/testing/#u6N08Untitled00000n310s0k02l00e03t1Ua7g0fj07r1O_U00000000i0o321T1v0pu39f0000q0wB162110O01d080A0F0B0Q7er4Pa610R0000E3c0ba61a628T1v0pu63f0000q0wB171110O01d080A1F1B4Qa4i4Pea3bR0000E2c0b962aT6v0pu75f010n900q08420O0d030WO00h0E1c02cT2v0pu15f180q0040O0d030w0h0E0c0b4h400000000h4g000000014h000000004h400000000p16000000"
+}
 
-
-
-
-
+function Abyssbox()
+{
+  document.getElementById("exportUrlInput").value = "https://choptop84.github.io/abyssbox-app/#a2N08UntitledY04nonen311s0k02l00e03t1Ua7g0fj07r3O_U0000000000i0o321T0v0pu86f0000q00000B1900Oa1d350w60h3y0000000000000g000000E1c0bcT5v0pulif031742e42k400q0000AD010q50002Q0Oa2ud880HU2h80000020p00h3E1c0c09T5v0pua5f060lc2dd2j02e02fd17800q00008540Oaad260HK_Sziiirrqih99h0E0c0T2v0pu15f180q0000040Oad030w0h0E0c0Tav0pu43f0000q0000w510Oa1d030E0c0b4h400000000h4g000000014h000000004h400000000h4g00000000p1900000f_M0"
+}
 
 function exportURLs() {
   const baseUrl = document.getElementById("exportUrlInput") ? document.getElementById("exportUrlInput").value : "";
@@ -423,6 +554,31 @@ function toggleItemsVisibility(arrow) {
 }
 
 </script>
+<footer>
+<hr>
+<h2>DISCLAIMER:</h2>
+<p>I do NOT have a server that saves any DATA, nor do I have anything that goes through networking.
+Github has STATIC websites, and I do not have money for an actual server lol.
+I made this entirely with the purpose of freedom to do what you want, and I hold no consequences to what people do with this.<p>
+<h2>TIPS:</h2>
+<ol>
+<li>Do not use the enter key to try and create a line break
+  <br>
+  LIKE
+  <br>
+  THIS
+  <br>
+  Instead, you should type LIKE THIS as LIKE&lt;br&gt;THIS. When you use br, you are telling the webpage to line break aka pressing enter on your keyboard. <b>casing is important!</b>
+  <li>&lt;b&gt; <b>PUT TEXT LIKE THIS TO MAKE IT BOLD!</b> &lt;/b&gt;</li>
+  <li>&lt;i&gt; <i>PUT TEXT LIKE THIS TO MAKE IT ITALICS!</i> &lt;/i&gt;</li>
+  <li>&lt;u&gt; <u>PUT TEXT LIKE THIS TO MAKE IT UNDERLINE!</u> &lt;/u&gt;</li>
+  <p>Note: These are actually exploits I found out lol. I won't patch them out, why? Cos you can make cool ass themes!
+    <br>
+    HUGE NOTE: THIS ALSO PROBABLY MEANS ANYONE CAN RUN JAVASCRIPT IN THESE JSON FILES. OPEN UP YOUR JSON FILES AND SEARCH "script" TO SEE IF PEOPLE WOULD INJECT SOMETHING! More than likely, no one would, and there's probably nothing people can do to seriously screw you up. I would find it funny though if someone just embedded PACMAN into this LMAO.
+  </p>
+ </li>
+</ol>
 
+</footer>
 </body>
 </html>
