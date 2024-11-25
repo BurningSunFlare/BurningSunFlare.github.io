@@ -6,20 +6,21 @@
   <link rel="icon"; type="image/png"; href="/Images/Icon/Main.png">
   <title>JSON Box System with Image Upload and Save/Load</title>
   <style>
-    body {
-      background: linear-gradient(to left, #0e052e, #1c1c1c);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: lightskyblue;
-    animation: body 10s ease-in-out infinite;
-    background-size: 400% 100%;
-    margin: 0; /* Remove default margin */
-    padding: 0; /* Remove default padding */
-    box-shadow: 5px 10px 8px hsl(241, 86%, 11%)
+body
+{
+  background: linear-gradient(to left, #0e052e, #1c1c1c);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: lightskyblue;
+  animation: body 10s ease-in-out infinite;
+  background-size: 400% 100%;
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+  box-shadow: 5px 10px 8px hsl(241, 86%, 11%)
 }
 div{box-shadow: 5px 10px 8px hsl(241, 86%, 11%)}
 
-p{ text-align: center; }
+footer p{ text-align: center; }
 
 @keyframes body {
     0%,100% {
@@ -30,8 +31,8 @@ p{ text-align: center; }
         background-position: 100% 0;
     }
 }
-
-    .box { border: 1px solid #34179d; padding: 10px; margin: 10px; background-color: hsl(211, 94%, 6%); box-shadow: 5px 10px 8px hsl(241, 86%, 11%) }
+    ::placeholder{ color:cornflowerblue }
+    .box { border: 1px solid #34179d; padding: 10px; margin: 10px; background-color: hsl(211, 94%, 6%); box-shadow: 5px 10px 8px hsl(241, 86%, 11%); background: transparent;background-image: none; }
     .hidden { display: none; }
     .collection, .item { border: 1px dashed #2959c9; padding: 5px; margin-top: 5px; box-shadow: 5px 6px 8px #0d1f4885 }
     .inbox
@@ -241,6 +242,11 @@ h2 {text-align: center;}
   <button onclick="uploadJSON()" class="button1">Upload JSON</button>
   <input type="file" id="fileInput" class="hidden" accept=".json" onchange="loadJSON(this.files)">
   <button onclick="downloadJSON()" class="button1">Save JSON</button>
+  Themer: <select id="themer" class="inbox semishort">
+    <option value="1" selected>Default</option>
+    <option value="2">Bubblegum Theme</option>
+    <option value="3">Coming soon</option>
+</select>
 </div>
 
 <div id="mainBox" class="box">
@@ -267,26 +273,362 @@ h2 {text-align: center;}
 <script>
 let isEditMode = true;
 let totalitems = 1;
+var menu = document.getElementById("themer");
 
-function toggleMode() {
+window.onload = function ()
+{
+  const savedValue = getCookie("selectedTheme");
+  if( savedValue )
+  {
+    menu.value = savedValue;
+    generateTheme( savedValue );
+  }
+};
+
+// Event listener to save the selected option and trigger an action
+menu.addEventListener( "change", function ()
+{
+  setCookie( "selectedTheme", menu.value, 365 );
+  generateTheme( menu.value );
+}
+);
+
+function generateTheme( value ) 
+{
+  switch( value )
+  {
+    case "1":
+      defaultTheme();
+    break;
+    case "2":
+      bubbleTheme();
+    break;
+    case "3":
+      console.log("This theme does not exist");
+    break;
+    default: alert("What the sigma? Theme broken?");
+  }
+}
+
+function setCookie( name, value, days )
+{
+  const date = new Date();
+  date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+  document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
+}
+
+function defaultTheme()
+{
+  let datheme = 
+  [
+    "::placeholder{ color:cornflowerblue }",
+    ".box {  border: 1px solid #34179d; box-shadow: 5px 10px 8px hsl(241, 86%, 11%); background: transparent; background-image: none }",
+    ".collection, .item { border: 1px dashed #2959c9; padding: 5px; margin-top: 5px; box-shadow: 5px 6px 8px #0d1f4885 }",
+    "body {background: linear-gradient(to left, #0e052e, #1c1c1c);-webkit-background-clip: text;background-clip: text;color: lightskyblue;animation: body 10s ease-in-out infinite;background-size: 400% 100%;margin: 0; /* Remove default margin */padding: 0; /* Remove default padding */box-shadow: 5px 10px 8px hsl(241, 86%, 11%)}",
+    "div {box-shadow: 5px 10px 8px hsl(241, 86%, 11%)}",
+    "footer p { text-align: center; }",
+
+    ".inbox{ background-color: #56209e43; color: rgb(147, 194, 255); border: 2px solid #4a297e; border-radius: 8px; }",
+    ".inbox:hover{ border-color: #7426b3; }",
+    ".inbox:focus{ outline: 2px solid #7426b3; font-weight:bold; color: rgb(147, 255, 194); }",
+
+    ".button3{ background-color: #56209e43;color: rgb(147, 194, 255); border: 2px solid #4a297e; }",
+    ".button3:hover{ border-color: lightblue; }",
+    `
+    .semishort:focus
+    {
+      color:lightblue;
+      background-color: #42005c;
+    }
+    `,
+
+    `
+    .tick
+    {
+      accent-color: green;
+    }
+    `,
+
+    `
+    .tick:not(:checked)
+    {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      -o-appearance: none;
+      appearance:none;
+      width: 10px;
+      height: 10px;
+      background-color: rgb(171, 9, 9);
+      border: 0px dotted #931414;
+      color: red;
+      content: "x";
+    }
+    `,
+`
+hr
+{
+  background: linear-gradient(to right, #3b1194, #22095a);
+  height: 5px;
+  border:0
+}
+`,
+
+`
+a
+{
+    text-align: center;
+    color:rgb(162, 100, 237);
+}
+`,
+
+`
+a:hover
+{
+    text-align: center;
+    color:rgb(202, 165, 245);
+}
+`,
+
+`
+.frame
+{
+  background-color: #56209e43;
+  border: none;
+  border-radius: 2px;
+  color: rgb(22, 67, 127);
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s;
+}
+`,
+
+`
+.frame:hover
+{
+  background-color: #0e11106d; /* Green */
+  color: white;
+}
+`,
+
+`
+.upload
+{
+  background-color: #56209e43; /* Green */
+  border: none;
+  border-radius: 2px;
+  color: rgb(147, 194, 255);
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s;
+}
+`,
+
+`
+.upload:hover
+{
+  background-color: #0e11106d; /* Green */
+  color: white;
+}
+`,
+
+`
+.button1
+{
+  background-color: #04AA6D; /* Green */
+  border: none;
+  border-radius: 2px;
+  color: rgb(22, 67, 127);
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s;
+}
+`,
+
+`
+.button1:hover {
+  background-color: #0e1110; /* Green */
+  color: white;
+}
+`,
+
+`
+.button2
+{
+  background-color: #04AA6D;
+  border: none;
+  width: 120px;
+  height: 60px;
+  margin-top: 25px;
+  border-radius: 2px;
+  color: rgb(22, 67, 127);
+  padding: 20px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s;
+}
+`,
+
+`
+.button2:hover {
+  background-color: #2f055f; /* Green */
+  color: rgb(0, 146, 250);
+}
+`,
+
+`
+.tooltip .tooltiptext {
+  width: 120px;
+  top: 100%;
+  left: 50%;
+  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+}
+`,
+
+
+"h2 {text-align: center;}",
+
+`
+.everything
+{
+  color:red;
+  border-color: red;
+}
+`,
+
+  ]
+  changeItemTheme( datheme )
+}
+
+function bubbleTheme()
+{
+  let datheme = 
+  [
+    ".box { border: 1px solid #cc30cf;box-shadow: 5px 10px 8px hsl(241, 86%, 11%); background: linear-gradient(to left, #f241c3, #f57ad4); background-image: url('https://images.pexels.com/photos/325526/pexels-photo-325526.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') }",
+    ".collection, .item { border: 1px dashed #FF59c9; padding: 5px; margin-top: 5px; box-shadow: 5px 6px 8px #AF29B9 }",
+    "body {background: linear-gradient(to left, #dd42f5, #Fd62f5);-webkit-background-clip: text;background-clip: text;color: #4f136e;animation: body 0s ease-in-out infinite;background-size: 100% 100%;margin: 0; /* Remove default margin */padding: 0; /* Remove default padding */box-shadow: 5px 10px 8px #AF29B9 }",
+    "div {box-shadow: 5px 10px 8px #AF29B9}",
+    "footer p { text-align: center; }",
+
+    ".inbox{ background-color: rgb(240 120 219 / 94%); color: white; 2px solid rgb(152 73 133); border-radius: 8px; }",
+    ".inbox:hover{ border-color: #7426b3; }",
+    ".inbox:focus{ outline: 2px solid #4f136e; font-weight:bold; color: rgb(255 211 197); }",
+
+    ".button3{ background-color: rgb(246 122 248);color: white; border: 2px solid rgb(192 43 156); }",
+    ".button3:hover{ border-color: white; }",
+    "::placeholder{ color:lightpink }",
+
+    `
+    .tick
+    {
+      accent-color: lightpink;
+    }
+    `,
+
+    `
+    .tick:not(:checked)
+    {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      -o-appearance: none;
+      appearance:none;
+      width: 10px;
+      height: 10px;
+      background-color: crimson;
+      border: 0px dotted pink;
+      color: pink;
+      content: "x";
+    }
+    `,
+`
+hr
+{
+  background: linear-gradient(to right, #8f2974, #f739c5);
+  height: 5px;
+  border:0
+}
+`,
+
+  ]
+  changeItemTheme( datheme )
+}
+
+function changeItemTheme( item )
+{
+  const styleSheet = document.styleSheets[0];
+  if( typeof( item ) == "object" )
+  {
+    for (let index = 0; index < item.length; ++index)
+    {
+      styleSheet.insertRule( item[index], styleSheet.cssRules.length );
+    }
+  }
+  else
+  styleSheet.insertRule( item, styleSheet.cssRules.length )
+}
+
+function sleep( ms )
+{
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function delay_test()
+{
+  console.log( 'Hello' );
+    await sleep( 2000 );
+  console.log( 'World!' );
+    await sleep( 2000 );
+  console.log( 'Goodbye!' );
+}
+delay_test()
+function getCookie( name )
+{
+  const cookies = document.cookie.split( "; " );
+  for ( const cookie of cookies )
+  {
+    const [ key, value ] = cookie.split( "=" );
+    if ( key === name )
+    {
+      return value;
+    }
+  }
+  return null;
+}
+
+function toggleMode()
+{
   isEditMode = !isEditMode;
   document.getElementById("mainBox").contentEditable = isEditMode ? "true" : "false";
 }
 
-function createBox() {
+function createBox()
+{
   document.getElementById("mainBox").classList.remove("hidden");
 }
 
-function updateImage(input, imageId) {
+function updateImage( input, imageId )
+{
   const file = input.files[0];
   const reader = new FileReader();
-  reader.onload = function(e) {
+  reader.onload = function(e)
+  {
     document.getElementById(imageId).src = e.target.result;
   };
   if (file) reader.readAsDataURL(file);
 }
 
-function addCollection(data = null) {
+function addCollection(data = null)
+{
   const container = document.createElement("div");
   container.classList.add("collection");
 
@@ -304,14 +646,16 @@ function addCollection(data = null) {
   `;
 
   const itemsContainer = container.querySelector(".items-container");
-  if (data && data.items) {
+  if ( data && data.items )
+  {
     data.items.forEach(item => addItem(container.querySelector('button'), item));
   }
 
   document.getElementById("collectionsContainer").appendChild(container);
 }
 
-function addItem(button, data = null) {
+function addItem(button, data = null)
+{
   const itemContainer = document.createElement("div");
   itemContainer.classList.add("item");
 
