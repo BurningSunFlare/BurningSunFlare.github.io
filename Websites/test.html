@@ -9,6 +9,7 @@
         <title>Test Website</title>
       </head>
 <body>
+    <style>.hidden { display: none; }</style>
     <header><hr>
         <h1>Super Secret Labratory of Testing</h1><br>
         <br>
@@ -77,6 +78,152 @@
 
     <footer><hr>
     <br><br><br>
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        .fade-in
+        {
+            opacity: 0;
+            transition: opacity 3s ease-in-out;
+        }
+
+        .video-left, .video-right {
+            position: fixed;
+            bottom: 20px; /* Ensure consistent vertical alignment */
+        }
+
+        .centered {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .visible {
+            display: block; /* Make the element visible */
+            opacity: 1;
+        }
+    </style>
+    <image class="hotdog" id="hotdog" src="/Images/Icon/hotdog.png" width="256" height="256"></image>
+    
+    <video id="cressyKiss" class="hidden fade-in" src="/Videos/Cressy Kiss.webm" width="512" height="512" loop muted autoplay></video>
+    
+    <audio id="explosionSound" class="hidden">
+        <source src="/Sounds/deltarune-explosion.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="car" class="hidden">
+        <source src="/Sounds/car crash.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function collisionEffect()
+        {
+            const cressyKiss = document.getElementById('cressyKiss');
+            const explosionSound = document.getElementById('explosionSound');
+            const car = document.getElementById('car');
+            // Remove hotdog image
+            const hotdog = document.getElementById('hotdog');
+            hotdog.remove();
+
+            // Create video elements
+            const videoLeft = document.createElement('video');
+            videoLeft.src = '/Videos/Stumpy Sit.webm';
+            videoLeft.width = 128;
+            videoLeft.height = 128;
+            videoLeft.muted = true;
+            videoLeft.autoplay = true;
+            videoLeft.style.position = 'fixed';
+            videoLeft.style.left = '0px';
+            videoLeft.style.bottom = '20px'; // Ensures alignment
+
+            const videoRight = document.createElement('video');
+            videoRight.src = '/Videos/Rart.webm';
+            videoRight.width = 512;
+            videoRight.height = 512;
+            videoRight.muted = true;
+            videoRight.autoplay = true;
+            videoRight.style.position = 'fixed';
+            videoRight.style.right = '0px';
+            videoRight.style.bottom = '-150px'; // Ensures alignment
+
+            document.body.appendChild(videoLeft);
+            document.body.appendChild(videoRight);
+            await sleep(1500);
+            car.play();
+
+            let currentbottom = 10;
+            let currentbottom2 = -140;
+            for (let step = 0; step <= 25; step++)
+            {
+                currentbottom += 10;
+                currentbottom2 -= 10;
+                videoLeft.style.bottom = `${currentbottom}px`;
+                videoRight.style.bottom = `${currentbottom2}px`;
+                await sleep( 75 );
+                currentbottom -= 10;
+                currentbottom2 += 10;
+                videoLeft.style.bottom = `${currentbottom}px`;
+                videoRight.style.bottom = `${currentbottom2}px`;
+                await sleep( 75 );
+            }
+            videoLeft.style.bottom = `20px`;
+            videoRight.style.bottom = `-150px`;
+
+            // Simulate videos moving towards each other
+            const screenWidth = window.innerWidth;
+            const totalSteps = 100;
+            for (let step = 0; step <= totalSteps; step++) {
+                const leftPosition = (screenWidth / 2 -180) * (step / totalSteps);
+                const rightPosition = (screenWidth / 2 -180) * (step / totalSteps);
+
+                videoLeft.style.left = `${leftPosition}px`;
+                videoRight.style.right = `${rightPosition}px`;
+
+                await sleep(20);
+            }
+
+            // Remove videos and add explosion effect
+            videoLeft.remove();
+            videoRight.remove();
+
+            const explosionImage = document.createElement('img');
+            explosionImage.src = '/Images/Icon/explosion.gif';
+            explosionImage.width = 512;
+            explosionImage.height = 512;
+            explosionImage.className = 'centered';
+            document.body.appendChild(explosionImage);
+
+            explosionSound.play();
+
+            //await sleep(4000);
+
+            // Remove explosion image and unhide Cressy Kiss
+            cressyKiss.classList.remove('hidden');
+            cressyKiss.classList.add('visible');
+
+            for(let index = 0; index < 20; ++index)
+            {
+                cressyKiss.style.opacity = 0.05 * index;
+                await sleep( 25 );
+            }
+            await sleep( 1000 )
+            explosionImage.remove();
+
+        }
+
+        // Event listener for hotdog click
+        document.getElementById('hotdog').addEventListener('click', function () {
+            collisionEffect();
+        });
+    </script>
+
     </footer>
     <script src="test.js"></script> 
 </body>

@@ -6,6 +6,66 @@
   <link rel="icon"; type="image/png"; href="/Images/Icon/Main.png">
   <title>JSON Box System with Image Upload and Save/Load</title>
   <style>
+
+.fade-in
+{
+    opacity: 0;
+    transition: opacity 3s ease-in-out;
+}
+
+.video-left, .video-right
+{
+    position: fixed;
+    bottom: 20px; /* Ensure consistent vertical alignment */
+}
+
+.centered
+{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.visible
+{
+    display: block; /* Make the element visible */
+    opacity: 1;
+}
+aside
+{
+    width:30%;
+    float:left;
+    padding:10px;
+    text-align: center;
+}
+section
+{
+    width:25%;
+    float:left;
+    padding:10px;
+    text-align: center;
+}
+article
+{
+    width:25%;
+    float:left;
+    padding:10px;
+    text-align: center;
+}
+footer
+{
+    clear:both;
+}
+@media screen and ( max-width:600px )
+{
+    aside, section, article
+    {
+        width:100%;
+    }
+}
+
+
 body
 {
   background: linear-gradient(to left, #0e052e, #1c1c1c);
@@ -269,635 +329,6 @@ h2 {text-align: center;}
   <br>
   <button onclick="exportURLs()" class = "button3">Load Samples</button>
 </div>
-
-<script>
-let isEditMode = true;
-let totalitems = 1;
-var menu = document.getElementById("themer");
-
-window.onload = function ()
-{
-  const savedValue = getCookie("selectedTheme");
-  if( savedValue )
-  {
-    menu.value = savedValue;
-    generateTheme( savedValue );
-  }
-};
-
-// Event listener to save the selected option and trigger an action
-menu.addEventListener( "change", function ()
-{
-  setCookie( "selectedTheme", menu.value, 365 );
-  generateTheme( menu.value );
-}
-);
-
-function generateTheme( value ) 
-{
-  switch( value )
-  {
-    case "1":
-      defaultTheme();
-    break;
-    case "2":
-      bubbleTheme();
-    break;
-    case "3":
-      console.log("This theme does not exist");
-    break;
-    default: alert("What the sigma? Theme broken?");
-  }
-}
-
-function setCookie( name, value, days )
-{
-  const date = new Date();
-  date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-  document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
-}
-
-function defaultTheme()
-{
-  let datheme = 
-  [
-    "::placeholder{ color:cornflowerblue }",
-    ".box {  border: 1px solid #34179d; box-shadow: 5px 10px 8px hsl(241, 86%, 11%); background: transparent; background-image: none }",
-    ".collection, .item { border: 1px dashed #2959c9; padding: 5px; margin-top: 5px; box-shadow: 5px 6px 8px #0d1f4885 }",
-    "body {background: linear-gradient(to left, #0e052e, #1c1c1c);-webkit-background-clip: text;background-clip: text;color: lightskyblue;animation: body 10s ease-in-out infinite;background-size: 400% 100%;margin: 0; /* Remove default margin */padding: 0; /* Remove default padding */box-shadow: 5px 10px 8px hsl(241, 86%, 11%)}",
-    "div {box-shadow: 5px 10px 8px hsl(241, 86%, 11%)}",
-    "footer p { text-align: center; }",
-
-    ".inbox{ background-color: #56209e43; color: rgb(147, 194, 255); border: 2px solid #4a297e; border-radius: 8px; }",
-    ".inbox:hover{ border-color: #7426b3; }",
-    ".inbox:focus{ outline: 2px solid #7426b3; font-weight:bold; color: rgb(147, 255, 194); }",
-
-    ".button3{ background-color: #56209e43;color: rgb(147, 194, 255); border: 2px solid #4a297e; }",
-    ".button3:hover{ border-color: lightblue; }",
-    `
-    .semishort:focus
-    {
-      color:lightblue;
-      background-color: #42005c;
-    }
-    `,
-
-    `
-    .tick
-    {
-      accent-color: green;
-    }
-    `,
-
-    `
-    .tick:not(:checked)
-    {
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      -o-appearance: none;
-      appearance:none;
-      width: 10px;
-      height: 10px;
-      background-color: rgb(171, 9, 9);
-      border: 0px dotted #931414;
-      color: red;
-      content: "x";
-    }
-    `,
-`
-hr
-{
-  background: linear-gradient(to right, #3b1194, #22095a);
-  height: 5px;
-  border:0
-}
-`,
-
-`
-a
-{
-    text-align: center;
-    color:rgb(162, 100, 237);
-}
-`,
-
-`
-a:hover
-{
-    text-align: center;
-    color:rgb(202, 165, 245);
-}
-`,
-
-`
-.frame
-{
-  background-color: #56209e43;
-  border: none;
-  border-radius: 2px;
-  color: rgb(22, 67, 127);
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  transition-duration: 0.4s;
-}
-`,
-
-`
-.frame:hover
-{
-  background-color: #0e11106d; /* Green */
-  color: white;
-}
-`,
-
-`
-.upload
-{
-  background-color: #56209e43; /* Green */
-  border: none;
-  border-radius: 2px;
-  color: rgb(147, 194, 255);
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  transition-duration: 0.4s;
-}
-`,
-
-`
-.upload:hover
-{
-  background-color: #0e11106d; /* Green */
-  color: white;
-}
-`,
-
-`
-.button1
-{
-  background-color: #04AA6D; /* Green */
-  border: none;
-  border-radius: 2px;
-  color: rgb(22, 67, 127);
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  transition-duration: 0.4s;
-}
-`,
-
-`
-.button1:hover {
-  background-color: #0e1110; /* Green */
-  color: white;
-}
-`,
-
-`
-.button2
-{
-  background-color: #04AA6D;
-  border: none;
-  width: 120px;
-  height: 60px;
-  margin-top: 25px;
-  border-radius: 2px;
-  color: rgb(22, 67, 127);
-  padding: 20px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  transition-duration: 0.4s;
-}
-`,
-
-`
-.button2:hover {
-  background-color: #2f055f; /* Green */
-  color: rgb(0, 146, 250);
-}
-`,
-
-`
-.tooltip .tooltiptext {
-  width: 120px;
-  top: 100%;
-  left: 50%;
-  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
-}
-`,
-
-
-"h2 {text-align: center;}",
-
-`
-.everything
-{
-  color:red;
-  border-color: red;
-}
-`,
-
-  ]
-  changeItemTheme( datheme )
-}
-
-function bubbleTheme()
-{
-  let datheme = 
-  [
-    ".box { border: 1px solid #cc30cf;box-shadow: 5px 10px 8px hsl(241, 86%, 11%); background: linear-gradient(to left, #f241c3, #f57ad4); background-image: url('https://images.pexels.com/photos/325526/pexels-photo-325526.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') }",
-    ".collection, .item { border: 1px dashed #FF59c9; padding: 5px; margin-top: 5px; box-shadow: 5px 6px 8px #AF29B9 }",
-    "body {background: linear-gradient(to left, #dd42f5, #Fd62f5);-webkit-background-clip: text;background-clip: text;color: #4f136e;animation: body 0s ease-in-out infinite;background-size: 100% 100%;margin: 0; /* Remove default margin */padding: 0; /* Remove default padding */box-shadow: 5px 10px 8px #AF29B9 }",
-    "div {box-shadow: 5px 10px 8px #AF29B9}",
-    "footer p { text-align: center; }",
-
-    ".inbox{ background-color: rgb(240 120 219 / 94%); color: white; 2px solid rgb(152 73 133); border-radius: 8px; }",
-    ".inbox:hover{ border-color: #7426b3; }",
-    ".inbox:focus{ outline: 2px solid #4f136e; font-weight:bold; color: rgb(255 211 197); }",
-
-    ".button3{ background-color: rgb(246 122 248);color: white; border: 2px solid rgb(192 43 156); }",
-    ".button3:hover{ border-color: white; }",
-    "::placeholder{ color:lightpink }",
-
-    `
-    .tick
-    {
-      accent-color: lightpink;
-    }
-    `,
-
-    `
-    .tick:not(:checked)
-    {
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      -o-appearance: none;
-      appearance:none;
-      width: 10px;
-      height: 10px;
-      background-color: crimson;
-      border: 0px dotted pink;
-      color: pink;
-      content: "x";
-    }
-    `,
-`
-hr
-{
-  background: linear-gradient(to right, #8f2974, #f739c5);
-  height: 5px;
-  border:0
-}
-`,
-
-  ]
-  changeItemTheme( datheme )
-}
-
-function changeItemTheme( item )
-{
-  const styleSheet = document.styleSheets[0];
-  if( typeof( item ) == "object" )
-  {
-    for (let index = 0; index < item.length; ++index)
-    {
-      styleSheet.insertRule( item[index], styleSheet.cssRules.length );
-    }
-  }
-  else
-  styleSheet.insertRule( item, styleSheet.cssRules.length )
-}
-
-function sleep( ms )
-{
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-async function delay_test()
-{
-  console.log( 'Hello' );
-    await sleep( 2000 );
-  console.log( 'World!' );
-    await sleep( 2000 );
-  console.log( 'Goodbye!' );
-}
-delay_test()
-function getCookie( name )
-{
-  const cookies = document.cookie.split( "; " );
-  for ( const cookie of cookies )
-  {
-    const [ key, value ] = cookie.split( "=" );
-    if ( key === name )
-    {
-      return value;
-    }
-  }
-  return null;
-}
-
-function toggleMode()
-{
-  isEditMode = !isEditMode;
-  document.getElementById("mainBox").contentEditable = isEditMode ? "true" : "false";
-}
-
-function createBox()
-{
-  document.getElementById("mainBox").classList.remove("hidden");
-}
-
-function updateImage( input, imageId )
-{
-  const file = input.files[0];
-  const reader = new FileReader();
-  reader.onload = function(e)
-  {
-    document.getElementById(imageId).src = e.target.result;
-  };
-  if (file) reader.readAsDataURL(file);
-}
-
-function addCollection(data = null)
-{
-  const container = document.createElement("div");
-  container.classList.add("collection");
-
-  const collectionImageId = `collectionImage${document.getElementsByClassName('collection').length}`;
-  container.innerHTML = `
-    <h4 contenteditable="true">${data ? data.title : 'Collection Title'}</h4>
-    <p contenteditable="true">${data ? data.description : 'Collection Description'}</p>
-    <img id="${collectionImageId}" src="${data ? data.image : '/Images/Icon/missing.gif'}" alt="Collection Image" width="128" height="128" class="frame">
-    <br>
-    <input type="file" onchange="updateImage(this, '${collectionImageId}')" class="upload"">
-    <p contenteditable="true">${data ? data.credits : 'Collection Credits'}</p>
-    <button class="button3" onclick="addItem(this)">Add Item</button>
-    <div class="items-container hidden"></div> <!-- Items container is hidden initially -->
-    <span class="dropdown-arrow" onclick="toggleItemsVisibility(this)">&#9660;</span> <!-- Dropdown arrow -->
-  `;
-
-  const itemsContainer = container.querySelector(".items-container");
-  if ( data && data.items )
-  {
-    data.items.forEach(item => addItem(container.querySelector('button'), item));
-  }
-
-  document.getElementById("collectionsContainer").appendChild(container);
-}
-
-function addItem(button, data = null)
-{
-  const itemContainer = document.createElement("div");
-  itemContainer.classList.add("item");
-
-  itemContainer.innerHTML = `
-    <label>Sound Name: <input type="text" value="${data ? data.soundName : ''}"class="inbox"></label>
-    <label>Loop Start: <input type="number" value="${data ? data.loopStart : 0}"class="inbox short"></label>
-    <label>Loop End: <input type="number" value="${data ? data.loopEnd : 0}"class="inbox short"></label>
-    <label>Offset: <input type="number" value="${data ? data.offset : 0}"class="inbox short"></label>
-    <label>Loop Type: 
-      <select class = "inbox semishort">
-        <option value="d0" ${data && data.loopType === 'd0' ? 'selected' : ''}>Loop</option>
-        <option value="d1" ${data && data.loopType === 'd1' ? 'selected' : ''}>Ping Pong</option>
-        <option value="d2" ${data && data.loopType === 'd2' ? 'selected' : ''}>Play Once</option>
-        <option value="d3" ${data && data.loopType === 'd3' ? 'selected' : ''}>Loop Play Once</option>
-      </select>
-    </label>
-    <label>Backwards: <input type="checkbox" ${data && data.backwards ? 'checked' : ''}class="tick"></label><br>
-    <label>Link: <input type="text" placeholder="Enter item link" value="${data ? data.link : ''}"class="inbox"></label>
-    <label> <input type="checkbox" ${data && data.export ? 'checked' : ''} class="hidden"></label>
-  `;
-  //<label>Export: <input type="checkbox" ${data && data.export ? 'checked' : ''}></label>
-
-  button.nextElementSibling.appendChild(itemContainer);
-}
-
-function uploadJSON() {
-  document.getElementById("fileInput").click();
-}
-
-function loadJSON(files) {
-  const file = files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const data = JSON.parse(e.target.result);
-    populateData(data);
-  };
-  reader.readAsText(file);
-}
-
-function populateData(jsonData) {
-  if (!jsonData) {
-    alert("Invalid JSON format or missing data.");
-    return;
-  }
-
-  const mainData = jsonData;
-
-  // Populate the main box fields
-  document.getElementById("mainTitle").textContent = mainData.title || "Default Title";
-  document.getElementById("mainImage").src = mainData.image || "/Images/Icon/missing.gif";
-  document.getElementById("mainCredits").textContent = mainData.credits || "This is where the credits go";
-
-  // Clear previous collections if any
-  const collectionsContainer = document.getElementById("collectionsContainer");
-  collectionsContainer.innerHTML = "";
-
-  // Loop through collections and populate them
-  // Loop through collections and populate them
-if (mainData.collections && mainData.collections.length > 0) {
-  mainData.collections.forEach(collectionData => {
-    const collectionElement = document.createElement("div");
-    collectionElement.classList.add("collection");
-
-    collectionElement.innerHTML = `
-      <h4>${collectionData.title || "Collection Title"}</h4>
-      <p>${collectionData.description || "Collection Description"}</p>
-      <img src="${collectionData.image || "/Images/Icon/missing.gif"}" alt="Collection Image" width="128" height="128">
-      <p>${collectionData.credits || "Collection Credits"}</p>
-      <div class="items-container hidden"></div>
-      <span class="dropdown-arrow" onclick="toggleItemsVisibility(this)">&#9660;</span>
-    `;
-
-    const itemsContainer = collectionElement.querySelector(".items-container");
-    if (collectionData.items && collectionData.items.length > 0) {
-      collectionData.items.forEach(item => {
-        const itemElement = document.createElement("div");
-        itemElement.classList.add("item");
-
-        itemElement.innerHTML = `
-          <input class="button_sound inbox all${totalitems} everything collection_sound${totalitems}" type="text" value="${item.soundName || ''}" placeholder="Sound Name">
-          <input class="button_loopstart inbox short all${totalitems} everything collection_loopstart${totalitems}" type="number" value="${item.loopStart || 0}" placeholder="Loop Start">
-          <input class="button_loopend inbox short all${totalitems} everything collection_loopend${totalitems}" type="number" value="${item.loopEnd || 0}" placeholder="Loop End">
-          <input class="button_offset inbox short all${totalitems} everything collection_offset${totalitems}" type="number" value="${item.offset || 0}" placeholder="Offset">
-          <select class="button_loop inbox semishort all${totalitems} everything collection_loop${totalitems}">
-            <option value="d0" ${item.loopType === 'd0' ? 'selected' : ''}>Loop</option>
-            <option value="d1" ${item.loopType === 'd1' ? 'selected' : ''}>Ping Pong</option>
-            <option value="d2" ${item.loopType === 'd2' ? 'selected' : ''}>Play Once</option>
-            <option value="d3" ${item.loopType === 'd3' ? 'selected' : ''}>Loop Play Once</option>
-          </select>
-          <input class="button_backward tick all${totalitems} everything collection_backward${totalitems}" type="checkbox" ${item.backwards ? 'checked' : ''}> Backwards
-          <input class="button_link inbox semishort all${totalitems} everything collection_link${totalitems}" type="text" value="${item.link || ''}" placeholder="Item Link">
-          <input class="button_export tick checkbox all${totalitems} everything collection_export${totalitems}" type="checkbox" ${item.export ? 'checked' : ''}> Export
-        `;
-        itemsContainer.appendChild(itemElement);
-        totalitems++;
-      });
-    }
-
-    collectionsContainer.appendChild(collectionElement);
-  });
-}
-
-}
-
-
-
-function downloadJSON() {
-  const mainBox = {
-    title: document.getElementById("mainTitle") ? document.getElementById("mainTitle").textContent : "Default Title",
-    image: document.getElementById("mainImage") ? document.getElementById("mainImage").src : "/Images/Icon/missing.gif",
-    credits: document.getElementById("mainCredits") ? document.getElementById("mainCredits").textContent : "This is where the credits go",
-    collections: []
-  };
-
-  // Loop through all collections
-  document.querySelectorAll('.collection').forEach(collection => {
-    const collectionData = {
-      title: collection.querySelector('h4') ? collection.querySelector('h4').textContent : "Collection Title",
-      description: collection.querySelector('p:nth-of-type(1)') ? collection.querySelector('p:nth-of-type(1)').textContent : "Collection Description",
-      image: collection.querySelector('img') ? collection.querySelector('img').src : "/Images/Icon/missing.gif",
-      credits: collection.querySelector('p:nth-of-type(2)') ? collection.querySelector('p:nth-of-type(2)').textContent : "Collection Credits",
-      items: []  // Initialize an empty array for items
-    };
-
-    // Loop through all items in the collection
-    collection.querySelectorAll('.item').forEach(item => {
-      const inputs = item.querySelectorAll('input');  // Get all inputs in the item
-      const soundNameInput = inputs[0];  // First input for sound name
-      const loopStartInput = inputs[1];  // Second input for loop start
-      const loopEndInput = inputs[2];  // Third input for loop end
-      const offsetInput = inputs[3];  // Fourth input for offset
-      const loopTypeSelect = item.querySelector('select');  // Select for loop type
-      const backwardsCheckbox = item.querySelector('input[type="checkbox"]');  // Checkbox for backwards
-      const linkInput = inputs[5];  // Fifth input for link (assuming it's in the right order)
-      const exportCheckbox = item.querySelector('input[type="checkbox"]:last-of-type');  // Export checkbox
-
-      // Debugging: Log the inputs to see if they exist
-      console.log("Sound Name:", soundNameInput ? soundNameInput.value : "Not found");
-      console.log("Loop Start:", loopStartInput ? loopStartInput.value : "Not found");
-      console.log("Loop End:", loopEndInput ? loopEndInput.value : "Not found");
-      console.log("Offset:", offsetInput ? offsetInput.value : "Not found");
-      console.log("Link:", linkInput ? linkInput.value : "Not found");
-      console.log("Export:", exportCheckbox ? exportCheckbox.checked : "Not found");
-
-      // Ensure loopStart, loopEnd, and offset have default values when they're missing
-      const itemData = {
-        soundName: soundNameInput ? soundNameInput.value : "",
-        loopStart: loopStartInput ? parseInt(loopStartInput.value) || 0 : 0, // Default to 0 if empty
-        loopEnd: loopEndInput ? parseInt(loopEndInput.value) || 0 : 0, // Default to 0 if empty
-        offset: offsetInput ? parseInt(offsetInput.value) || 0 : 0, // Default to 0 if empty
-        loopType: loopTypeSelect ? loopTypeSelect.value : 'd0', // Default loopType if not selected
-        backwards: backwardsCheckbox ? backwardsCheckbox.checked : false,
-        link: linkInput ? linkInput.value : '', // Ensure we get the correct link from the second input
-        export: exportCheckbox ? exportCheckbox.checked : false // Ensure export field is properly captured
-      };
-
-      // Debugging: Log item data to check
-      console.log("Item Data:", itemData);
-
-      // Add item data to the collection's items array
-      collectionData.items.push(itemData);
-    });
-
-    // Add collection data to the main collections array
-    mainBox.collections.push(collectionData);
-  });
-
-  // If no collections exist, prevent export and show a message
-  if (mainBox.collections.length === 0) {
-    alert("No collections to export.");
-    return;
-  }
-
-  // Convert data to JSON and trigger download
-  const blob = new Blob([JSON.stringify(mainBox, null, 2)], { type: "application/json" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "data.json";
-  link.click();
-}
-
-
-function Ultrabox()
-{
-  document.getElementById("exportUrlInput").value = "https://ultraabox.github.io/testing/#u6N08Untitled00000n310s0k02l00e03t1Ua7g0fj07r1O_U00000000i0o321T1v0pu39f0000q0wB162110O01d080A0F0B0Q7er4Pa610R0000E3c0ba61a628T1v0pu63f0000q0wB171110O01d080A1F1B4Qa4i4Pea3bR0000E2c0b962aT6v0pu75f010n900q08420O0d030WO00h0E1c02cT2v0pu15f180q0040O0d030w0h0E0c0b4h400000000h4g000000014h000000004h400000000p16000000"
-}
-
-function Abyssbox()
-{
-  document.getElementById("exportUrlInput").value = "https://choptop84.github.io/abyssbox-app/#a2N08UntitledY04nonen311s0k02l00e03t1Ua7g0fj07r3O_U0000000000i0o321T0v0pu86f0000q00000B1900Oa1d350w60h3y0000000000000g000000E1c0bcT5v0pulif031742e42k400q0000AD010q50002Q0Oa2ud880HU2h80000020p00h3E1c0c09T5v0pua5f060lc2dd2j02e02fd17800q00008540Oaad260HK_Sziiirrqih99h0E0c0T2v0pu15f180q0000040Oad030w0h0E0c0Tav0pu43f0000q0000w510Oa1d030E0c0b4h400000000h4g000000014h000000004h400000000h4g00000000p1900000f_M0"
-}
-
-function exportURLs() {
-  const baseUrl = document.getElementById("exportUrlInput") ? document.getElementById("exportUrlInput").value : "";
-  let exportStr = "";
-
-  document.querySelectorAll('.collection .item').forEach(item => {
-    const inputs = item.querySelectorAll('input');
-    const soundNameInput = inputs[0];
-    const loopStartInput = inputs[1];
-    const loopEndInput = inputs[2];
-    const offsetInput = inputs[3];
-    const loopTypeSelect = item.querySelector('select');
-    const backwardsCheckbox = item.querySelector('input[type="checkbox"]');
-    const linkInput = inputs[5];
-    const exportCheckbox = item.querySelector('input[type="checkbox"]:last-of-type');
-
-    if (exportCheckbox && exportCheckbox.checked) {
-      const soundName = encodeURIComponent(soundNameInput ? soundNameInput.value : '');
-      const loopStart = loopStartInput ? parseInt(loopStartInput.value) || 0 : 0;
-      const loopEnd = loopEndInput ? parseInt(loopEndInput.value) || 0 : 0;
-      const offset = offsetInput ? parseInt(offsetInput.value) || 0 : 0;
-      const loopType = loopTypeSelect ? loopTypeSelect.value : 'd0';
-      const backwards = backwardsCheckbox && backwardsCheckbox.checked ? 1 : 0;
-      const link = linkInput ? linkInput.value : '';
-
-      const fullUrl = `|!a${loopStart},b${loopEnd},c${offset},${loopType}${backwards}!${link}`;
-      exportStr += fullUrl;
-    }
-  });
-
-  console.log(baseUrl + exportStr); // Output the URLs in console for testing
-  window.location.href = baseUrl + exportStr;
-  //alert("Exported URLs:\n" + exportStr); // Display exported URLs in an alert for now
-}
-
-
-
-function toggleItemsVisibility(arrow) {
-  const itemsContainer = arrow.parentElement.querySelector(".items-container");
-  if (itemsContainer.classList.contains("hidden")) {
-    itemsContainer.classList.remove("hidden");
-    arrow.innerHTML = "&#9650;"; // Change arrow to "up" when showing items
-  } else {
-    itemsContainer.classList.add("hidden");
-    arrow.innerHTML = "&#9660;"; // Change arrow to "down" when hiding items
-  }
-}
-
-</script>
 <footer>
 <hr>
 <h2>DISCLAIMER:</h2>
@@ -923,6 +354,809 @@ I made this entirely with the purpose of freedom to do what you want, and I hold
  </li>
 </ol>
 
+<image class="hotdog" id="hotdog" src="/Images/Icon/hotdog.png" width="256" height="256"></image>
+    
+    <video id="cressyKiss" class="hidden fade-in" src="/Videos/Cressy Kiss.webm" width="512" height="512" loop muted autoplay></video>
+    
+    <audio id="explosionSound" class="hidden">
+        <source src="/Sounds/deltarune-explosion.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="car" class="hidden">
+        <source src="/Sounds/car crash.mp3" type="audio/mpeg">
+    </audio>
+
+<aside>
+  <h2 class="toUnhide hidden">Twitch Kat!</h2>
+  <image class="toUnhide hidden" src="/Images/Crescent pfp.png" width="256" height="256"></image>
+  <p class="toUnhide hidden">
+    <i>Aka: Firefly, BurningSunFlare, Crescent( The umbreon spitting rainbow! ), Mr Orange Pony, AND 20 MORE ALIASES!</i>
+    <br>
+    I'm just some wacky guy who takes interest in xbox360 Source Engine Modding(Tf2, L4D2),
+    and even do a little funny rom hacking here and there such as Fire emblem!
+    <br>
+    I really hope this website will be useful to some people. I know you can't exactly edit once you save your json file,
+    but just contact me @twitchkat on discord, and I can share you something that you can edit your own stuff.
+  </p>
+</aside>
+<section>
+<h2 class="toUnhide hidden">Boohemian</h2>
+<image class="toUnhide hidden" src="/Images/Bdasher.jpg" width="256" height="256"></image>
+<p class="toUnhide hidden">
+  <i>aka BDasher</i>
+  A canadian dude who I call british because it's funny.
+  <br>
+  <i>
+    Oh, right. I gotta say some stuff huh?  
+  </i>
+  <br>
+  In that case, he's a pretty cool dude! Loves jazz, and probably the reason my interest in music spiked WAY UP. I mean hell, I made this website not really for myself lol.
+</p>
+
+</section>
+
+<article>
+  <h2 class="toUnhide hidden">Rart!</h2>
+  <image class="toUnhide hidden" src="/Images/Rart.png" width="256" height="256"></image>
+  <p class="toUnhide hidden">
+    Hi Rart!<br>
+    Hi Rart!<br>
+    Hi Rart!<br>
+    <b>
+      I SAID HEY RART. SAY HI.
+    </b>
+    <br>
+    <h3 class="toUnhide hidden">
+      OOGA BOOGA DOOGA BOO, IM GONNA MAKE YOU HONK SCHNOO
+    </h3>
+  </p>
+</article>
+
 </footer>
+
+<script>
+  let isEditMode = true;
+  let totalitems = 1;
+  var menu = document.getElementById("themer");
+  
+  window.onload = function ()
+  {
+    const savedValue = getCookie("selectedTheme");
+    if( savedValue )
+    {
+      menu.value = savedValue;
+      generateTheme( savedValue );
+    }
+  };
+  
+  // Event listener to save the selected option and trigger an action
+  menu.addEventListener( "change", function ()
+  {
+    setCookie( "selectedTheme", menu.value, 365 );
+    generateTheme( menu.value );
+  }
+  );
+  
+  function generateTheme( value ) 
+  {
+    switch( value )
+    {
+      case "1":
+        defaultTheme();
+      break;
+      case "2":
+        bubbleTheme();
+      break;
+      case "3":
+        console.log("This theme does not exist");
+      break;
+      default: alert("What the sigma? Theme broken?");
+    }
+  }
+  
+  function setCookie( name, value, days )
+  {
+    const date = new Date();
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+    document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/`;
+  }
+  
+  function defaultTheme()
+  {
+    let datheme = 
+    [
+      "::placeholder{ color:cornflowerblue }",
+      ".box {  border: 1px solid #34179d; box-shadow: 5px 10px 8px hsl(241, 86%, 11%); background: transparent; background-image: none }",
+      ".collection, .item { border: 1px dashed #2959c9; padding: 5px; margin-top: 5px; box-shadow: 5px 6px 8px #0d1f4885 }",
+      "body {background: linear-gradient(to left, #0e052e, #1c1c1c);-webkit-background-clip: text;background-clip: text;color: lightskyblue;animation: body 10s ease-in-out infinite;background-size: 400% 100%;margin: 0; /* Remove default margin */padding: 0; /* Remove default padding */box-shadow: 5px 10px 8px hsl(241, 86%, 11%)}",
+      "div {box-shadow: 5px 10px 8px hsl(241, 86%, 11%)}",
+      "footer p { text-align: center; }",
+  
+      ".inbox{ background-color: #56209e43; color: rgb(147, 194, 255); border: 2px solid #4a297e; border-radius: 8px; }",
+      ".inbox:hover{ border-color: #7426b3; }",
+      ".inbox:focus{ outline: 2px solid #7426b3; font-weight:bold; color: rgb(147, 255, 194); }",
+  
+      ".button3{ background-color: #56209e43;color: rgb(147, 194, 255); border: 2px solid #4a297e; }",
+      ".button3:hover{ border-color: lightblue; }",
+      `
+      .semishort:focus
+      {
+        color:lightblue;
+        background-color: #42005c;
+      }
+      `,
+  
+      `
+      .tick
+      {
+        accent-color: green;
+      }
+      `,
+  
+      `
+      .tick:not(:checked)
+      {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -o-appearance: none;
+        appearance:none;
+        width: 10px;
+        height: 10px;
+        background-color: rgb(171, 9, 9);
+        border: 0px dotted #931414;
+        color: red;
+        content: "x";
+      }
+      `,
+  `
+  hr
+  {
+    background: linear-gradient(to right, #3b1194, #22095a);
+    height: 5px;
+    border:0
+  }
+  `,
+  
+  `
+  a
+  {
+      text-align: center;
+      color:rgb(162, 100, 237);
+  }
+  `,
+  
+  `
+  a:hover
+  {
+      text-align: center;
+      color:rgb(202, 165, 245);
+  }
+  `,
+  
+  `
+  .frame
+  {
+    background-color: #56209e43;
+    border: none;
+    border-radius: 2px;
+    color: rgb(22, 67, 127);
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition-duration: 0.4s;
+  }
+  `,
+  
+  `
+  .frame:hover
+  {
+    background-color: #0e11106d; /* Green */
+    color: white;
+  }
+  `,
+  
+  `
+  .upload
+  {
+    background-color: #56209e43; /* Green */
+    border: none;
+    border-radius: 2px;
+    color: rgb(147, 194, 255);
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition-duration: 0.4s;
+  }
+  `,
+  
+  `
+  .upload:hover
+  {
+    background-color: #0e11106d; /* Green */
+    color: white;
+  }
+  `,
+  
+  `
+  .button1
+  {
+    background-color: #04AA6D; /* Green */
+    border: none;
+    border-radius: 2px;
+    color: rgb(22, 67, 127);
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition-duration: 0.4s;
+  }
+  `,
+  
+  `
+  .button1:hover {
+    background-color: #0e1110; /* Green */
+    color: white;
+  }
+  `,
+  
+  `
+  .button2
+  {
+    background-color: #04AA6D;
+    border: none;
+    width: 120px;
+    height: 60px;
+    margin-top: 25px;
+    border-radius: 2px;
+    color: rgb(22, 67, 127);
+    padding: 20px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition-duration: 0.4s;
+  }
+  `,
+  
+  `
+  .button2:hover {
+    background-color: #2f055f; /* Green */
+    color: rgb(0, 146, 250);
+  }
+  `,
+  
+  `
+  .tooltip .tooltiptext {
+    width: 120px;
+    top: 100%;
+    left: 50%;
+    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+  }
+  `,
+  
+  
+  "h2 {text-align: center;}",
+  
+  `
+  .everything
+  {
+    color:red;
+    border-color: red;
+  }
+  `,
+  
+    ]
+    changeItemTheme( datheme )
+  }
+  
+  function bubbleTheme()
+  {
+    let datheme = 
+    [
+      ".box { border: 1px solid #cc30cf;box-shadow: 5px 10px 8px hsl(241, 86%, 11%); background: linear-gradient(to left, #f241c3, #f57ad4); background-image: url('https://images.pexels.com/photos/325526/pexels-photo-325526.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') }",
+      ".collection, .item { border: 1px dashed #FF59c9; padding: 5px; margin-top: 5px; box-shadow: 5px 6px 8px #AF29B9 }",
+      "body {background: linear-gradient(to left, #dd42f5, #Fd62f5);-webkit-background-clip: text;background-clip: text;color: #4f136e;animation: body 0s ease-in-out infinite;background-size: 100% 100%;margin: 0; /* Remove default margin */padding: 0; /* Remove default padding */box-shadow: 5px 10px 8px #AF29B9 }",
+      "div {box-shadow: 5px 10px 8px #AF29B9}",
+      "footer p { text-align: center; }",
+  
+      ".inbox{ background-color: rgb(240 120 219 / 94%); color: white; 2px solid rgb(152 73 133); border-radius: 8px; }",
+      ".inbox:hover{ border-color: #7426b3; }",
+      ".inbox:focus{ outline: 2px solid #4f136e; font-weight:bold; color: rgb(255 211 197); }",
+  
+      ".button3{ background-color: rgb(246 122 248);color: white; border: 2px solid rgb(192 43 156); }",
+      ".button3:hover{ border-color: white; }",
+      "::placeholder{ color:lightpink }",
+  
+      `
+      .tick
+      {
+        accent-color: lightpink;
+      }
+      `,
+  
+      `
+      .tick:not(:checked)
+      {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -o-appearance: none;
+        appearance:none;
+        width: 10px;
+        height: 10px;
+        background-color: crimson;
+        border: 0px dotted pink;
+        color: pink;
+        content: "x";
+      }
+      `,
+  `
+  hr
+  {
+    background: linear-gradient(to right, #8f2974, #f739c5);
+    height: 5px;
+    border:0
+  }
+  `,
+  
+    ]
+    changeItemTheme( datheme )
+  }
+  
+  function changeItemTheme( item )
+  {
+    const styleSheet = document.styleSheets[0];
+    if( typeof( item ) == "object" )
+    {
+      for (let index = 0; index < item.length; ++index)
+      {
+        styleSheet.insertRule( item[index], styleSheet.cssRules.length );
+      }
+    }
+    else
+    styleSheet.insertRule( item, styleSheet.cssRules.length )
+  }
+  
+  function sleep( ms )
+  {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  
+  async function delay_test()
+  {
+    console.log( 'Hello' );
+      await sleep( 2000 );
+    console.log( 'World!' );
+      await sleep( 2000 );
+    console.log( 'Goodbye!' );
+  }
+  delay_test()
+  function getCookie( name )
+  {
+    const cookies = document.cookie.split( "; " );
+    for ( const cookie of cookies )
+    {
+      const [ key, value ] = cookie.split( "=" );
+      if ( key === name )
+      {
+        return value;
+      }
+    }
+    return null;
+  }
+  
+  function toggleMode()
+  {
+    isEditMode = !isEditMode;
+    document.getElementById("mainBox").contentEditable = isEditMode ? "true" : "false";
+  }
+  
+  function createBox()
+  {
+    document.getElementById("mainBox").classList.remove("hidden");
+  }
+  
+  function updateImage( input, imageId )
+  {
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e)
+    {
+      document.getElementById(imageId).src = e.target.result;
+    };
+    if (file) reader.readAsDataURL(file);
+  }
+  
+  function addCollection(data = null)
+  {
+    const container = document.createElement("div");
+    container.classList.add("collection");
+  
+    const collectionImageId = `collectionImage${document.getElementsByClassName('collection').length}`;
+    container.innerHTML = `
+      <h4 contenteditable="true">${data ? data.title : 'Collection Title'}</h4>
+      <p contenteditable="true">${data ? data.description : 'Collection Description'}</p>
+      <img id="${collectionImageId}" src="${data ? data.image : '/Images/Icon/missing.gif'}" alt="Collection Image" width="128" height="128" class="frame">
+      <br>
+      <input type="file" onchange="updateImage(this, '${collectionImageId}')" class="upload"">
+      <p contenteditable="true">${data ? data.credits : 'Collection Credits'}</p>
+      <button class="button3" onclick="addItem(this)">Add Item</button>
+      <div class="items-container hidden"></div> <!-- Items container is hidden initially -->
+      <span class="dropdown-arrow" onclick="toggleItemsVisibility(this)">&#9660;</span> <!-- Dropdown arrow -->
+    `;
+  
+    const itemsContainer = container.querySelector(".items-container");
+    if ( data && data.items )
+    {
+      data.items.forEach(item => addItem(container.querySelector('button'), item));
+    }
+  
+    document.getElementById("collectionsContainer").appendChild(container);
+  }
+  
+  function addItem(button, data = null)
+  {
+    const itemContainer = document.createElement("div");
+    itemContainer.classList.add("item");
+  
+    itemContainer.innerHTML = `
+      <label>Sound Name: <input type="text" value="${data ? data.soundName : ''}"class="inbox"></label>
+      <label>Loop Start: <input type="number" value="${data ? data.loopStart : 0}"class="inbox short"></label>
+      <label>Loop End: <input type="number" value="${data ? data.loopEnd : 0}"class="inbox short"></label>
+      <label>Offset: <input type="number" value="${data ? data.offset : 0}"class="inbox short"></label>
+      <label>Loop Type: 
+        <select class = "inbox semishort">
+          <option value="d0" ${data && data.loopType === 'd0' ? 'selected' : ''}>Loop</option>
+          <option value="d1" ${data && data.loopType === 'd1' ? 'selected' : ''}>Ping Pong</option>
+          <option value="d2" ${data && data.loopType === 'd2' ? 'selected' : ''}>Play Once</option>
+          <option value="d3" ${data && data.loopType === 'd3' ? 'selected' : ''}>Loop Play Once</option>
+        </select>
+      </label>
+      <label>Backwards: <input type="checkbox" ${data && data.backwards ? 'checked' : ''}class="tick"></label><br>
+      <label>Link: <input type="text" placeholder="Enter item link" value="${data ? data.link : ''}"class="inbox"></label>
+      <label> <input type="checkbox" ${data && data.export ? 'checked' : ''} class="hidden"></label>
+    `;
+    //<label>Export: <input type="checkbox" ${data && data.export ? 'checked' : ''}></label>
+  
+    button.nextElementSibling.appendChild(itemContainer);
+  }
+  
+  function uploadJSON() {
+    document.getElementById("fileInput").click();
+  }
+  
+  function loadJSON(files) {
+    const file = files[0];
+    if (!file) return;
+  
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const data = JSON.parse(e.target.result);
+      populateData(data);
+    };
+    reader.readAsText(file);
+  }
+  
+  function populateData(jsonData) {
+    if (!jsonData) {
+      alert("Invalid JSON format or missing data.");
+      return;
+    }
+  
+    const mainData = jsonData;
+  
+    // Populate the main box fields
+    document.getElementById("mainTitle").textContent = mainData.title || "Default Title";
+    document.getElementById("mainImage").src = mainData.image || "/Images/Icon/missing.gif";
+    document.getElementById("mainCredits").textContent = mainData.credits || "This is where the credits go";
+  
+    // Clear previous collections if any
+    const collectionsContainer = document.getElementById("collectionsContainer");
+    collectionsContainer.innerHTML = "";
+  
+    // Loop through collections and populate them
+    // Loop through collections and populate them
+  if (mainData.collections && mainData.collections.length > 0) {
+    mainData.collections.forEach(collectionData => {
+      const collectionElement = document.createElement("div");
+      collectionElement.classList.add("collection");
+  
+      collectionElement.innerHTML = `
+        <h4>${collectionData.title || "Collection Title"}</h4>
+        <p>${collectionData.description || "Collection Description"}</p>
+        <img src="${collectionData.image || "/Images/Icon/missing.gif"}" alt="Collection Image" width="128" height="128">
+        <p>${collectionData.credits || "Collection Credits"}</p>
+        <div class="items-container hidden"></div>
+        <span class="dropdown-arrow" onclick="toggleItemsVisibility(this)">&#9660;</span>
+      `;
+  
+      const itemsContainer = collectionElement.querySelector(".items-container");
+      if (collectionData.items && collectionData.items.length > 0) {
+        collectionData.items.forEach(item => {
+          const itemElement = document.createElement("div");
+          itemElement.classList.add("item");
+  
+          itemElement.innerHTML = `
+            <input class="button_sound inbox all${totalitems} everything collection_sound${totalitems}" type="text" value="${item.soundName || ''}" placeholder="Sound Name">
+            <input class="button_loopstart inbox short all${totalitems} everything collection_loopstart${totalitems}" type="number" value="${item.loopStart || 0}" placeholder="Loop Start">
+            <input class="button_loopend inbox short all${totalitems} everything collection_loopend${totalitems}" type="number" value="${item.loopEnd || 0}" placeholder="Loop End">
+            <input class="button_offset inbox short all${totalitems} everything collection_offset${totalitems}" type="number" value="${item.offset || 0}" placeholder="Offset">
+            <select class="button_loop inbox semishort all${totalitems} everything collection_loop${totalitems}">
+              <option value="d0" ${item.loopType === 'd0' ? 'selected' : ''}>Loop</option>
+              <option value="d1" ${item.loopType === 'd1' ? 'selected' : ''}>Ping Pong</option>
+              <option value="d2" ${item.loopType === 'd2' ? 'selected' : ''}>Play Once</option>
+              <option value="d3" ${item.loopType === 'd3' ? 'selected' : ''}>Loop Play Once</option>
+            </select>
+            <input class="button_backward tick all${totalitems} everything collection_backward${totalitems}" type="checkbox" ${item.backwards ? 'checked' : ''}> Backwards
+            <input class="button_link inbox semishort all${totalitems} everything collection_link${totalitems}" type="text" value="${item.link || ''}" placeholder="Item Link">
+            <input class="button_export tick checkbox all${totalitems} everything collection_export${totalitems}" type="checkbox" ${item.export ? 'checked' : ''}> Export
+          `;
+          itemsContainer.appendChild(itemElement);
+          totalitems++;
+        });
+      }
+  
+      collectionsContainer.appendChild(collectionElement);
+    });
+  }
+  
+  }
+  
+  
+  
+  function downloadJSON() {
+    const mainBox = {
+      title: document.getElementById("mainTitle") ? document.getElementById("mainTitle").textContent : "Default Title",
+      image: document.getElementById("mainImage") ? document.getElementById("mainImage").src : "/Images/Icon/missing.gif",
+      credits: document.getElementById("mainCredits") ? document.getElementById("mainCredits").textContent : "This is where the credits go",
+      collections: []
+    };
+  
+    // Loop through all collections
+    document.querySelectorAll('.collection').forEach(collection => {
+      const collectionData = {
+        title: collection.querySelector('h4') ? collection.querySelector('h4').textContent : "Collection Title",
+        description: collection.querySelector('p:nth-of-type(1)') ? collection.querySelector('p:nth-of-type(1)').textContent : "Collection Description",
+        image: collection.querySelector('img') ? collection.querySelector('img').src : "/Images/Icon/missing.gif",
+        credits: collection.querySelector('p:nth-of-type(2)') ? collection.querySelector('p:nth-of-type(2)').textContent : "Collection Credits",
+        items: []  // Initialize an empty array for items
+      };
+  
+      // Loop through all items in the collection
+      collection.querySelectorAll('.item').forEach(item => {
+        const inputs = item.querySelectorAll('input');  // Get all inputs in the item
+        const soundNameInput = inputs[0];  // First input for sound name
+        const loopStartInput = inputs[1];  // Second input for loop start
+        const loopEndInput = inputs[2];  // Third input for loop end
+        const offsetInput = inputs[3];  // Fourth input for offset
+        const loopTypeSelect = item.querySelector('select');  // Select for loop type
+        const backwardsCheckbox = item.querySelector('input[type="checkbox"]');  // Checkbox for backwards
+        const linkInput = inputs[5];  // Fifth input for link (assuming it's in the right order)
+        const exportCheckbox = item.querySelector('input[type="checkbox"]:last-of-type');  // Export checkbox
+  
+        // Debugging: Log the inputs to see if they exist
+        console.log("Sound Name:", soundNameInput ? soundNameInput.value : "Not found");
+        console.log("Loop Start:", loopStartInput ? loopStartInput.value : "Not found");
+        console.log("Loop End:", loopEndInput ? loopEndInput.value : "Not found");
+        console.log("Offset:", offsetInput ? offsetInput.value : "Not found");
+        console.log("Link:", linkInput ? linkInput.value : "Not found");
+        console.log("Export:", exportCheckbox ? exportCheckbox.checked : "Not found");
+  
+        // Ensure loopStart, loopEnd, and offset have default values when they're missing
+        const itemData = {
+          soundName: soundNameInput ? soundNameInput.value : "",
+          loopStart: loopStartInput ? parseInt(loopStartInput.value) || 0 : 0,
+          loopEnd: loopEndInput ? parseInt(loopEndInput.value) || 0 : 0,
+          offset: offsetInput ? parseInt(offsetInput.value) || 0 : 0,
+          loopType: loopTypeSelect ? loopTypeSelect.value : 'd0',
+          backwards: backwardsCheckbox ? backwardsCheckbox.checked : false,
+          link: linkInput ? linkInput.value : '',
+          export: exportCheckbox ? exportCheckbox.checked : false 
+        };
+  
+        console.log("Item Data:", itemData);
+  
+        collectionData.items.push(itemData);
+      });
+  
+      mainBox.collections.push(collectionData);
+    });
+  
+    if (mainBox.collections.length === 0) {
+      alert("No collections to export.");
+      return;
+    }
+  
+    const blob = new Blob([JSON.stringify(mainBox, null, 2)], { type: "application/json" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "data.json";
+    link.click();
+  }
+  
+  
+  function Ultrabox()
+  {
+    document.getElementById("exportUrlInput").value = "https://ultraabox.github.io/testing/#u6N08Untitled00000n310s0k02l00e03t1Ua7g0fj07r1O_U00000000i0o321T1v0pu39f0000q0wB162110O01d080A0F0B0Q7er4Pa610R0000E3c0ba61a628T1v0pu63f0000q0wB171110O01d080A1F1B4Qa4i4Pea3bR0000E2c0b962aT6v0pu75f010n900q08420O0d030WO00h0E1c02cT2v0pu15f180q0040O0d030w0h0E0c0b4h400000000h4g000000014h000000004h400000000p16000000"
+  }
+  
+  function Abyssbox()
+  {
+    document.getElementById("exportUrlInput").value = "https://choptop84.github.io/abyssbox-app/#a2N08UntitledY04nonen311s0k02l00e03t1Ua7g0fj07r3O_U0000000000i0o321T0v0pu86f0000q00000B1900Oa1d350w60h3y0000000000000g000000E1c0bcT5v0pulif031742e42k400q0000AD010q50002Q0Oa2ud880HU2h80000020p00h3E1c0c09T5v0pua5f060lc2dd2j02e02fd17800q00008540Oaad260HK_Sziiirrqih99h0E0c0T2v0pu15f180q0000040Oad030w0h0E0c0Tav0pu43f0000q0000w510Oa1d030E0c0b4h400000000h4g000000014h000000004h400000000h4g00000000p1900000f_M0"
+  }
+  
+  function exportURLs() {
+    const baseUrl = document.getElementById("exportUrlInput") ? document.getElementById("exportUrlInput").value : "";
+    let exportStr = "";
+  
+    document.querySelectorAll('.collection .item').forEach(item => {
+      const inputs = item.querySelectorAll('input');
+      const soundNameInput = inputs[0];
+      const loopStartInput = inputs[1];
+      const loopEndInput = inputs[2];
+      const offsetInput = inputs[3];
+      const loopTypeSelect = item.querySelector('select');
+      const backwardsCheckbox = item.querySelector('input[type="checkbox"]');
+      const linkInput = inputs[5];
+      const exportCheckbox = item.querySelector('input[type="checkbox"]:last-of-type');
+  
+      if (exportCheckbox && exportCheckbox.checked) {
+        const soundName = encodeURIComponent(soundNameInput ? soundNameInput.value : '');
+        const loopStart = loopStartInput ? parseInt(loopStartInput.value) || 0 : 0;
+        const loopEnd = loopEndInput ? parseInt(loopEndInput.value) || 0 : 0;
+        const offset = offsetInput ? parseInt(offsetInput.value) || 0 : 0;
+        const loopType = loopTypeSelect ? loopTypeSelect.value : 'd0';
+        const backwards = backwardsCheckbox && backwardsCheckbox.checked ? 1 : 0;
+        const link = linkInput ? linkInput.value : '';
+  
+        const fullUrl = `|!a${loopStart},b${loopEnd},c${offset},${loopType}${backwards}!${link}`;
+        exportStr += fullUrl;
+      }
+    });
+  
+    console.log(baseUrl + exportStr);
+    window.location.href = baseUrl + exportStr;
+  }
+  
+  
+  
+  function toggleItemsVisibility(arrow)
+  {
+    const itemsContainer = arrow.parentElement.querySelector(".items-container");
+    if (itemsContainer.classList.contains("hidden"))
+    {
+      itemsContainer.classList.remove("hidden");
+      arrow.innerHTML = "&#9650;";
+    }
+    else
+    {
+      itemsContainer.classList.add("hidden");
+      arrow.innerHTML = "&#9660;";
+    }
+  }
+  
+  function sleep(ms) 
+  {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  
+async function collisionEffect()
+{
+   const cressyKiss = document.getElementById('cressyKiss');
+   const explosionSound = document.getElementById('explosionSound');
+   const car = document.getElementById('car');
+   const hotdog = document.getElementById('hotdog');
+   const paras = document.querySelectorAll('.toUnhide');
+   hotdog.remove();
+   for (let i = 0; i < paras.length; i++)
+  {
+    paras[i].classList.remove('hidden');
+    paras[i].style.opacity = 0;
+  }
+
+  paras[0].classList.remove('hidden');
+  
+  cressyKiss.classList.remove('hidden');
+  
+  cressyKiss.style.opacity = 0
+
+  const videoLeft = document.createElement('video');
+  videoLeft.src = '/Videos/Stumpy Sit.webm';
+  videoLeft.width = 128;
+  videoLeft.height = 128;
+  videoLeft.muted = true;
+  videoLeft.autoplay = true;
+  videoLeft.style.position = 'fixed';
+  videoLeft.style.left = '0px';
+  videoLeft.style.bottom = '20px';
+  
+  const videoRight = document.createElement('video');
+  videoRight.src = '/Videos/Rart.webm';
+  videoRight.width = 512;
+  videoRight.height = 512;
+  videoRight.muted = true;
+  videoRight.autoplay = true;
+  videoRight.style.position = 'fixed';
+  videoRight.style.right = '0px';
+  videoRight.style.bottom = '-150px';
+  
+  document.body.appendChild(videoLeft);
+  document.body.appendChild(videoRight);
+  await sleep(1500);
+  car.play();
+  
+  let currentbottom = 10;
+  let currentbottom2 = -140;
+  for (let step = 0; step <= 25; step++)
+  {
+    currentbottom += 10;
+    currentbottom2 -= 10;
+    videoLeft.style.bottom = `${currentbottom}px`;
+    videoRight.style.bottom = `${currentbottom2}px`;
+    await sleep( 75 );
+    currentbottom -= 10;
+    currentbottom2 += 10;
+    videoLeft.style.bottom = `${currentbottom}px`;
+    videoRight.style.bottom = `${currentbottom2}px`;
+    await sleep( 75 );
+  }
+  videoLeft.style.bottom = `20px`;
+  videoRight.style.bottom = `-150px`;
+
+  const screenWidth = window.innerWidth;
+  const totalSteps = 100;
+  for (let step = 0; step <= totalSteps; step++)
+  {
+    const leftPosition = (screenWidth / 2 -180) * (step / totalSteps);
+    const rightPosition = (screenWidth / 2 -180) * (step / totalSteps);
+  
+    videoLeft.style.left = `${leftPosition}px`;
+    videoRight.style.right = `${rightPosition}px`;
+  
+    await sleep(20);
+  }
+  
+  videoLeft.remove();
+  videoRight.remove();
+  
+  const explosionImage = document.createElement('img');
+  explosionImage.src = '/Images/Icon/explosion.gif';
+  explosionImage.width = 512;
+  explosionImage.height = 512;
+  explosionImage.className = 'centered';
+  document.body.appendChild(explosionImage);
+  
+  explosionSound.play();
+  
+  cressyKiss.classList.remove('hidden');
+  cressyKiss.classList.add('visible');
+  
+  for(let index = 0; index < 20; ++index)
+  {
+    cressyKiss.style.opacity = 0.05 * index;
+    await sleep( 25 );
+  }
+  await sleep( 3000 )
+  explosionImage.remove();
+  for(let index = 0; index < 20; ++index)
+  {
+    for (let i = 0; i < paras.length; i++)
+    {
+      paras[i].style.opacity = 0.05 * index;
+    }
+    await sleep( 25 );
+  }
+}
+  
+document.getElementById('hotdog').addEventListener('click', function ()
+{
+    collisionEffect();
+});
+  </script>
+
 </body>
 </html>
