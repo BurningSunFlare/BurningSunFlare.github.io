@@ -78,6 +78,12 @@ body
   padding: 0; /* Remove default padding */
   box-shadow: 5px 10px 8px hsl(241, 86%, 11%)
 }
+
+body.non-chromium
+{
+  background: linear-gradient(to left, #0e052e, #1c1c1c);
+}
+
 div{box-shadow: 5px 10px 8px hsl(241, 86%, 11%)}
 
 footer p{ text-align: center; }
@@ -415,6 +421,13 @@ I made this entirely with the purpose of freedom to do what you want, and I hold
 </footer>
 
 <script>
+
+const isChromium = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+if (!isChromium)
+{
+  document.body.classList.add('non-chromium');
+}
+
   let isEditMode = true;
   let totalitems = 1;
   var menu = document.getElementById("themer");
@@ -468,6 +481,7 @@ I made this entirely with the purpose of freedom to do what you want, and I hold
       "::placeholder{ color:cornflowerblue }",
       ".box {  border: 1px solid #34179d; box-shadow: 5px 10px 8px hsl(241, 86%, 11%); background: transparent; background-image: none }",
       ".collection, .item { border: 1px dashed #2959c9; padding: 5px; margin-top: 5px; box-shadow: 5px 6px 8px #0d1f4885 }",
+      `body.non-chromium {background: linear-gradient(to left, #dd42f5, #Fd62f5);}`,
       "body {background: linear-gradient(to left, #0e052e, #1c1c1c);-webkit-background-clip: text;background-clip: text;color: lightskyblue;animation: body 10s ease-in-out infinite;background-size: 400% 100%;margin: 0; /* Remove default margin */padding: 0; /* Remove default padding */box-shadow: 5px 10px 8px hsl(241, 86%, 11%)}",
       "div {box-shadow: 5px 10px 8px hsl(241, 86%, 11%)}",
       "footer p { text-align: center; }",
@@ -656,11 +670,13 @@ I made this entirely with the purpose of freedom to do what you want, and I hold
   
   function bubbleTheme()
   {
+    
     let datheme = 
     [
       ".box { border: 1px solid #cc30cf;box-shadow: 5px 10px 8px hsl(241, 86%, 11%); background: linear-gradient(to left, #f241c3, #f57ad4); background-image: url('https://images.pexels.com/photos/325526/pexels-photo-325526.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') }",
       ".collection, .item { border: 1px dashed #FF59c9; padding: 5px; margin-top: 5px; box-shadow: 5px 6px 8px #AF29B9 }",
       "body {background: linear-gradient(to left, #dd42f5, #Fd62f5);-webkit-background-clip: text;background-clip: text;color: #4f136e;animation: body 0s ease-in-out infinite;background-size: 100% 100%;margin: 0; /* Remove default margin */padding: 0; /* Remove default padding */box-shadow: 5px 10px 8px #AF29B9 }",
+      `body.non-chromium {background: linear-gradient(to left, #dd42f5, #Fd62f5);}`,
       "div {box-shadow: 5px 10px 8px #AF29B9}",
       "footer p { text-align: center; }",
   
