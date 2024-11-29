@@ -424,11 +424,7 @@ a:hover
 }
 
 h2 {text-align: center;}
-.everything
-{
-  color:red;
-  border-color: red;
-}
+
   </style>
 </head>
 <body>
@@ -497,7 +493,7 @@ I made this entirely with the purpose of freedom to do what you want, and I hold
 <image class="hotdog" id="hotdog" src="/Images/Icon/hotdog.png" width="256" height="256"></image>
     <br>
     <video id="cressyKiss" class="hidden fade-in" src="/Videos/Cressy Kiss.webm" width="512" height="512" loop muted autoplay></video>
-    
+    <a id="linkofbulk" class ="hidden" href=/Websites/sample_extractor.html>Modded Sample Extractor</a>
     <audio id="explosionSound" class="hidden">
         <source src="/Sounds/deltarune-explosion.mp3" type="audio/mpeg">
     </audio>
@@ -1395,6 +1391,8 @@ function crescentclick()
   let Sound = document.getElementById('crescentSong');
   Sound.volume = 0.35;
   Sound.play();
+  const bulk = document.getElementById('linkofbulk');
+  bulk.classList.remove('hidden');
 }
 
 function meclick()
