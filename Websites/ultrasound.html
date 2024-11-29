@@ -594,9 +594,10 @@ I made this entirely with the purpose of freedom to do what you want, and I hold
 
 <script>
 
-const isChromium = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
-if (!isChromium)
+const isChromium = !!window.chrome;
+if ( !isChromium )
 {
+  console.log("This browser is not intended for firefox or safari or anything not chromium based");
   document.body.classList.add('non-chromium');
 }
 
