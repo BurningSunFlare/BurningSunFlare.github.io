@@ -1079,14 +1079,15 @@ if (!isChromium)
               <option value="d2" ${item.loopType === 'd2' ? 'selected' : ''}>Play Once</option>
               <option value="d3" ${item.loopType === 'd3' ? 'selected' : ''}>Loop Play Once</option>
             </select>
-            <input class="button_backward tick all${totalitems} everything collection_backward${totalitems}" type="checkbox" ${item.backwards ? 'checked' : ''}> Backwards
+            <input class="button_backward tick all${totalitems} everything collection_backward${totalitems}" type="checkbox" ${item.backwards ? 'checked' : ''}> <knot class="button_backward all${totalitems} everything collection_backward${totalitems}">Backwards</knot>
             <input class="button_link inbox semishort all${totalitems} everything collection_link${totalitems}" type="text" value="${item.link || ''}" placeholder="Item Link">
             <input class="button_export tick checkbox all${totalitems} everything collection_export${totalitems}" type="checkbox" ${item.export ? 'checked' : ''}> Export
           `;
           itemsContainer.appendChild(itemElement);
-          totalitems++;
         });
       }
+
+      totalitems++;
   
       collectionsContainer.appendChild(collectionElement);
     });
