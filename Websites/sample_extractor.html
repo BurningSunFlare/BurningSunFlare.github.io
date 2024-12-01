@@ -274,6 +274,10 @@ aside {
             <div class="footer-area">
                 <details>
                     <summary>Changelog</summary>
+                    <h3>v1.4.1(Unofficial)</h3>
+                    <ul>
+                        <li>Added a .wav file extension to the link on export for easier refactoring</li>
+                    </ul>
                     <h3>v1.4.0(Unofficial)</h3>
                     <ul>
                         <li>Added bulk JSON export</li>
@@ -5672,7 +5676,7 @@ var fileContent =
           "offset": 0,
           "loopType": "${loop}",
           "backwards": false,
-          "link": "FILE_PATH_${exportedNames[index][0]}",
+          "link": "FILE_PATH_${exportedNames[index][0]}.wav",
           "export": false
         ${symbol}`
       }

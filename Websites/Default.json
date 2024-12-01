@@ -1,0 +1,63 @@
+{
+  "title": "Default Title TEST",
+  "image": "http://127.0.0.1:5500/Images/Icon/Kittyd.gif",
+  "credits": "CREDITS TEST",
+  "collections": [
+    {
+      "title": "Collection Title",
+      "description": "Collection Description",
+      "image": "http://127.0.0.1:5500/Images/Icon/missing.gif",
+      "credits": "Collection Credits TEST",
+      "items": [
+        {
+          "soundName": "Sound1",
+          "loopStart": 1,
+          "loopEnd": 1,
+          "offset": 1,
+          "loopType": "d0",
+          "backwards": false,
+          "link": "",
+          "export": false
+        },
+        {
+          "soundName": "Sound2",
+          "loopStart": 2,
+          "loopEnd": 2,
+          "offset": 2,
+          "loopType": "d0",
+          "backwards": false,
+          "link": "",
+          "export": false
+        }
+      ]
+    },
+    {
+      "title": "Collection Title TEST2",
+      "description": "Collection Description TEST2",
+      "image": "http://127.0.0.1:5500/Images/Icon/missing.gif",
+      "credits": "Collection Credits TEST",
+      "items": [
+        {
+          "soundName": "Sound3",
+          "loopStart": 3,
+          "loopEnd": 3,
+          "offset": 3,
+          "loopType": "d0",
+          "backwards": false,
+          "link": "",
+          "export": false
+        },
+        {
+          "soundName": "Sound4",
+          "loopStart": 4,
+          "loopEnd": 4,
+          "offset": 4,
+          "loopType": "d0",
+          "backwards": false,
+          "link": "",
+          "export": false
+        }
+      ]
+    }
+  ]
+}
