@@ -439,7 +439,7 @@ h2 {text-align: center;}
   <!-- <button onclick="toggleMode()" class="button1">Toggle Edit/Preview Mode</button> -->
   <!-- button onclick="createBox()" class="button1">Create Box</button -->
   
-  <button onclick="uploadJSON()" class="button1">Upload JSON</button>
+  <button onclick="uploadJSON()" class="button1" id="daclear">Upload JSON</button>
   <input type="file" id="fileInput" class="hidden" accept=".json" onchange="loadJSON(this.files)">
   <button onclick="downloadJSON()" class="button1">Save JSON</button>
   Themer: <select id="themer" class="inbox semishort">
@@ -1121,6 +1121,7 @@ Promise.all( sampleUrls.map( loadSample ) ).then
   
   function uploadJSON() {
     document.getElementById("fileInput").click();
+    document.getElementById("daclear").value = "";
   }
   
   function loadJSON(files) {
@@ -1143,18 +1144,14 @@ Promise.all( sampleUrls.map( loadSample ) ).then
   
     const mainData = jsonData;
   
-    // Populate the main box fields
     document.getElementById("mainTitle").innerHTML = mainData.title || "Default Title";
     document.getElementById("mainImage").innerHTML = `<img src="${mainData.image || "/Images/Icon/missing.gif"}" alt="Main Image">`;
     document.getElementById("mainCredits").innerHTML = mainData.credits || "This is where the credits go";
 
   
-    // Clear previous collections if any
     const collectionsContainer = document.getElementById("collectionsContainer");
     collectionsContainer.innerHTML = "";
-  
-    // Loop through collections and populate them
-    // Loop through collections and populate them
+
   if (mainData.collections && mainData.collections.length > 0) {
     mainData.collections.forEach(collectionData => {
       const collectionElement = document.createElement("div");
