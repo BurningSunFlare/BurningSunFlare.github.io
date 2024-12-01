@@ -448,7 +448,7 @@ h2 {text-align: center;}
     <option value="3">Coming soon</option>
 </select>
 </div>
-
+<p class = "hidden mainboy"></p>
 <div id="mainBox" class="box">
   <h3 id="mainTitle" contenteditable="true">Default Title</h3>
   <img id="mainImage" src="/Images/Icon/Kittyd.gif" alt="Main Image" width="256" height="256" class="frame">
@@ -1144,9 +1144,10 @@ Promise.all( sampleUrls.map( loadSample ) ).then
     const mainData = jsonData;
   
     // Populate the main box fields
-    document.getElementById("mainTitle").textContent = mainData.title || "Default Title";
-    document.getElementById("mainImage").src = mainData.image || "/Images/Icon/missing.gif";
-    document.getElementById("mainCredits").textContent = mainData.credits || "This is where the credits go";
+    document.getElementById("mainTitle").innerHTML = mainData.title || "Default Title";
+    document.getElementById("mainImage").innerHTML = `<img src="${mainData.image || "/Images/Icon/missing.gif"}" alt="Main Image">`;
+    document.getElementById("mainCredits").innerHTML = mainData.credits || "This is where the credits go";
+
   
     // Clear previous collections if any
     const collectionsContainer = document.getElementById("collectionsContainer");
