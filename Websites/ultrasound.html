@@ -281,6 +281,10 @@ footer p{ text-align: center; }
       color:lightblue;
       background-color: #42005c;
     }
+    .supershort
+    {
+      width: 36px;
+    }
     .tick
     {
       accent-color: green;
@@ -601,8 +605,117 @@ if ( !isChromium )
   document.body.classList.add('non-chromium');
 }
 
+const context = new AudioContext();
+
+function loadSample( url )
+{
+  return fetch( url )
+    .then( response => response.arrayBuffer() )
+    .then( buffer => context.decodeAudioData( buffer ) );
+}
+
+let activeSources = new Map();
+
+function playSample(sampleBuffer, sampleNote, noteToPlay, sampleId)
+{
+  const source = context.createBufferSource();
+  source.buffer = sampleBuffer;
+  source.playbackRate.value = 2 ** ((noteToPlay - sampleNote) / 12);
+  source.connect(context.destination);
+  source.start(0);
+
+  if (sampleId)
+  {
+    if (!activeSources.has(sampleId))
+    {
+      activeSources.set(sampleId, []);
+    }
+    activeSources.get(sampleId).push(source);
+  }
+
+  source.onended = () =>
+  {
+    if (sampleId)
+    {
+      // Remove the source from the array
+      const sources = activeSources.get(sampleId);
+      if (sources)
+      {
+        const index = sources.indexOf(source);
+        if (index > -1)
+        {
+          sources.splice(index, 1);
+        }
+        // If no sources remain, delete the sampleId entry
+        if (sources.length === 0)
+        {
+          activeSources.delete(sampleId);
+        }
+      }
+    }
+  };
+}
+
+function stopSample( sampleId )
+{
+  const sources = activeSources.get(sampleId);
+  if (sources && Array.isArray(sources))
+  {
+    sources.forEach(source =>
+    {
+      try
+      {
+        source.stop(0);
+      }
+      catch (err)
+      {
+        console.error("Error stopping source:", err);
+      }
+    });
+    activeSources.delete(sampleId);
+  }
+}
+
+const sampleUrls =
+[
+
+];
+
+const audioCtx = new AudioContext();
+
+// Create an AudioBufferSourceNode and decode the audio file
+fetch('https://file.garden/ZqiE3n15RExrNTti/Super%20Metroid/Bass(pad).wav')
+  .then(response => response.arrayBuffer())
+  .then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer))
+  .then(audioBuffer => {
+    // Access the length of the audio sample in frames
+    const sampleLength = audioBuffer.length;
+
+    console.log("Sample length in frames:", sampleLength);
+  });
+
+sampleUrls.push( 'https://file.garden/ZqiE3n15RExrNTti/Goofy/Mario%20Boing.mp3' );
+
+console.log( sampleUrls[0] );
+
+Promise.all( sampleUrls.map( loadSample ) ).then
+( samples =>
+  {
+    playSample( samples[0], 60, 60, 'whistle' );
+    setTimeout( () => stopSample( 'whistle' ), 300 );
+  }
+);
+
+
+
+
+
+
   let isEditMode = true;
   let totalitems = 1;
+  let totalcontainers = 0;
+  var isPlaying = false;
+  var isWaiting = false;
   var menu = document.getElementById("themer");
   
   window.onload = function ()
@@ -614,8 +727,7 @@ if ( !isChromium )
       generateTheme( savedValue );
     }
   };
-  
-  // Event listener to save the selected option and trigger an action
+
   menu.addEventListener( "change", function ()
   {
     setCookie( "selectedTheme", menu.value, 365 );
@@ -1076,8 +1188,33 @@ if ( !isChromium )
             <input class="button_backward tick all${totalitems} everything collection_backward${totalitems}" type="checkbox" ${item.backwards ? 'checked' : ''}> <knot class="button_backward all${totalitems} everything collection_backward${totalitems}">Backwards</knot>
             <input class="button_link inbox semishort all${totalitems} everything collection_link${totalitems}" type="text" value="${item.link || ''}" placeholder="Item Link">
             <input class="button_export tick checkbox all${totalitems} everything collection_export${totalitems}" type="checkbox" ${item.export ? 'checked' : ''}> Export
+
+            <button onclick="unhide_elements( ${totalcontainers}, this, '${item.link}' )"class="inbox semishort">Play</button>
+            <select id="Playful${totalcontainers}" class="hidden samplestuff${totalcontainers} Playful${totalcontainers} inbox semishort">
+            <option value="1" selected>Once</option>
+            <option value="2">Major</option>
+            <option value="3">Minor</option>
+            <option value="4">Diminished</option>
+            <option value="5">Ascend</option>
+            <option value="6">Descend</option>
+            <option value="7">Appregio</option>
+            <option value="8">Aggressive Appregio</option>
+            </select>
+            <label for="musical${totalcontainers}"></label>
+            <input 
+              type="number"
+              min="12" 
+              max="120" 
+              value="60"
+              id=musical${totalcontainers}
+              class="hidden samplestuff${totalcontainers} musical${totalcontainers} button_loop inbox semishort supershort all${totalitems} everything"
+              oninput="updateNote( this, ${totalcontainers} )">
+            <b class="hidden noteDisplay${totalcontainers} inbox samplestuff${totalcontainers}">C4</b>
           `;
+
           itemsContainer.appendChild(itemElement);
+
+          totalcontainers++;
         });
       }
 
@@ -1085,11 +1222,160 @@ if ( !isChromium )
   
       collectionsContainer.appendChild(collectionElement);
     });
+
+
+    for( let index = 0; index < totalcontainers; index++ )
+    {
+      const musics = document.getElementsByClassName(`musical${index}`);
+      //console.log(index);
+      musics[0].addEventListener("keydown", e =>
+      {
+        if (e.keyCode !== 38 && e.keyCode !== 40) e.preventDefault();
+        musics[0].dataset.number = totalcontainers;
+        console.log( `${musics[0].dataset.number}` );
+      });
+    }
+
   }
   
   }
-  
-  
+
+  function unhide_elements(num, self, samplelink)
+  {
+
+  self.textContent = "WAIT";
+
+  loadSample(samplelink)
+    .then(sampleBuffer =>
+    {
+      self.textContent = "Play";
+      self.onclick = () => soundplayer(num, sampleBuffer);
+    })
+    .catch(error =>
+    {
+      console.error("Error loading sample:", error);
+      self.textContent = "Error";
+    });
+
+  const elements = document.getElementsByClassName(`samplestuff${num}`);
+  for (let i = 0; i < elements.length; i++)
+  {
+    elements[i].classList.remove("hidden");
+  }
+}
+
+async function soundplayer(num, sampleBuffer)
+{
+  const stopId = `musical${num}_stop`;
+  const noteElement = document.getElementById(`musical${num}`);
+  const funnynumber = document.getElementById(`Playful${num}`).value;
+  stopSample(stopId);
+
+  if(noteElement)
+  {
+    const noteToPlay = parseInt(noteElement.value, 10) || 60;
+  switch(funnynumber)
+  {
+    case "1":
+      playSample(sampleBuffer, 60, noteToPlay, stopId);
+    break;
+    case "2":
+      playSample(sampleBuffer, 60, noteToPlay, stopId);
+      playSample(sampleBuffer, 60, noteToPlay + 4, stopId);
+      playSample(sampleBuffer, 60, noteToPlay + 7, stopId);
+    break;
+    case "3":
+      playSample(sampleBuffer, 60, noteToPlay, stopId);
+      playSample(sampleBuffer, 60, noteToPlay + 3, stopId);
+      playSample(sampleBuffer, 60, noteToPlay + 7, stopId);
+    break;
+    case "4":
+      playSample(sampleBuffer, 60, noteToPlay, stopId);
+      playSample(sampleBuffer, 60, noteToPlay + 3, stopId);
+      playSample(sampleBuffer, 60, noteToPlay + 6, stopId);
+    break;
+    case "5":
+      for(let i = 0; i < 12; i++)
+      {
+        stopSample(stopId);
+        playSample(sampleBuffer, 60, noteToPlay + i, stopId);
+        await sleep(400);
+      }
+      stopSample(stopId);
+      break;
+      case "6":
+      for(let i = 0; i < 12; i++)
+      {
+        stopSample(stopId);
+        playSample(sampleBuffer, 60, noteToPlay - i, stopId);
+        await sleep(400);
+      }
+      stopSample(stopId);
+    break;
+    case "7":
+      for(let i = 0; i < 6; i++)
+      {
+        stopSample(stopId);
+        playSample(sampleBuffer, 60, noteToPlay, stopId);
+        await sleep(100);
+        stopSample(stopId);
+        playSample(sampleBuffer, 64, noteToPlay, stopId);
+        await sleep(100);
+        stopSample(stopId);
+        playSample(sampleBuffer, 67, noteToPlay, stopId);
+        await sleep(100);
+        stopSample(stopId);
+        playSample(sampleBuffer, 64, noteToPlay, stopId);
+        await sleep(100);
+      }
+      stopSample(stopId);
+    break;
+    case "8":
+    for(let i = 0; i < 9; i++)
+      {
+        stopSample(stopId);
+        playSample(sampleBuffer, 60, noteToPlay, stopId);
+        await sleep(50);
+        stopSample(stopId);
+        playSample(sampleBuffer, 64, noteToPlay, stopId);
+        await sleep(50);
+        stopSample(stopId);
+        playSample(sampleBuffer, 67, noteToPlay, stopId);
+        await sleep(50);
+        stopSample(stopId);
+        playSample(sampleBuffer, 64, noteToPlay, stopId);
+        await sleep(50);
+      }
+      stopSample(stopId);
+    break;
+    default:
+      console.log(funnynumber);
+      break;
+
+  }
+}
+
+}
+
+  const notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+  function updateNote( daself, dacontainer )
+    {
+      const input = daself;
+      const display = document.getElementsByClassName(`noteDisplay${dacontainer}`);
+      const number = parseInt(input.value, 10);
+
+      if ( number >= 12 && number <= 120 )
+      {
+        const noteIndex = ( number - 12 ) % 12;
+        const octave = Math.floor( ( number - 12 ) / 12 );
+        const note = notes[ noteIndex ] + octave;
+        display[0].textContent = note;
+      }
+      else 
+      {
+        display[0].textContent = "Invalid input!";
+      }
+    }
   
   function downloadJSON() {
     const mainBox = {
