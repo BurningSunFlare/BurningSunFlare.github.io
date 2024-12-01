@@ -461,8 +461,16 @@ h2 {text-align: center;}
 
 <div>
   <hr>
-  <button onclick="Ultrabox()" class = "button3">Ultrabox</button>
-  <button onclick="Abyssbox()" class = "button3">Abyssbox</button>
+  Modded Beepbox to use: <select id="beeps" class="inbox semishort">
+    <option value="1" selected></option>
+    <option value="2">Ultrabox</option>
+    <option value="3">Abyssbox</option>
+    <option value="4">Slarmoo's Box</option>
+    <option value="5">Unbox</option>
+    <option value="6">Baribox</option>
+    <option value="7">VoxBox</option>
+    <option value="8">AxoBox</option>
+    </select>
   <br>
   <input class="inbox" type="text" id="exportUrlInput" placeholder="Main Url" class="tooltip">
   <span class="tooltiptext">Grab your base url. Abyssbox or Ultrabox for example, then click Load Samples</span>
@@ -689,6 +697,48 @@ const audioCtx = new AudioContext();
   var isPlaying = false;
   var isWaiting = false;
   var menu = document.getElementById("themer");
+  var beeps = document.getElementById("beeps");
+  var urls = document.getElementById("exportUrlInput");
+
+  beeps.addEventListener( "change", function ()
+  {
+    urlChange( beeps.value )
+  }
+  );
+
+  function urlChange( value ) 
+  {
+    switch( value )
+    {
+      case "1":
+        urls.value = "";
+      break;
+      case "2":
+        urls.value = "https://ultraabox.github.io/testing/#u6N08Untitled00000n310s0k02l00e03t1Ua7g0fj07r1O_U00000000i0o321T1v0pu39f0000q0wB162110O01d080A0F0B0Q7er4Pa610R0000E3c0ba61a628T1v0pu63f0000q0wB171110O01d080A1F1B4Qa4i4Pea3bR0000E2c0b962aT6v0pu75f010n900q08420O0d030WO00h0E1c02cT2v0pu15f180q0040O0d030w0h0E0c0b4h400000000h4g000000014h000000004h400000000p16000000";
+      break;
+      case "3":
+        urls.value = "https://choptop84.github.io/abyssbox-app/#a2N08UntitledY04nonen311s0k02l00e03t1Ua7g0fj07r3O_U0000000000i0o321T0v0pu86f0000q00000B1900Oa1d350w60h3y0000000000000g000000E1c0bcT5v0pulif031742e42k400q0000AD010q50002Q0Oa2ud880HU2h80000020p00h3E1c0c09T5v0pua5f060lc2dd2j02e02fd17800q00008540Oaad260HK_Sziiirrqih99h0E0c0T2v0pu15f180q0000040Oad030w0h0E0c0Tav0pu43f0000q0000w510Oa1d030E0c0b4h400000000h4g000000014h000000004h400000000h4g00000000p1900000f_M0";
+      break;
+      case "4":
+        urls.value = "https://slarmoo.github.io/slarmoosbox/website/#s4N08Untitledn311s0k02l00e03t2ma7g0fj07r1O_c000U0000000000i0o321T1v0pui3f184qd53u10Oa77rd580AcF0B3Q4545PffffR0000E0c0T5v0pudbf151qo5120O01d040HXQRRJJHJAAArq8h0E0c0T1v0puc8f134q050O01d230A1F0B2Q64d4Pb660R0000E1c06270X0aT2v0pu15f180q040O0d030w0h0E0c0Tav0puihf0000qh510Oa7f8d070E0c0b4h400000000h4g000000014h000000004h400000000h4g00000000p1900000f_M0";
+      break;
+      case "5":
+        urls.value = "https://un-conventional.github.io/#U1N07Unnamedn310s0k02l00e03t1Ua7g0fj07r3O_U00000000i0o321T0v0pud2f0000q0A010l5000Oad080w40h1y00000000000008000000E1c0baT1v0pupaf012ta00q0C010r5000Oa7d180A8F8B8Q56ciPda58R0000E4c0ba62a63k7aT1v0puk4f172q8520Oa1d230A9F5B5Q6f4nPa883R0000E1c078T4v0puq0f1a0q050Oa1z8888onapap4oSBKSJJAArriiiiii07JCABrzrrrrrrr00YrkqHrsrrrrjr005zrAqzrjzrrqr1jRjrqGGrrzsrsA099ijrABJJJIAzrrtirqrqjqixzsrAjrqjiqaqqysttAJqjikikrizrHtBJJAzArzrIsRCITKSS099ijrAJS____Qg99habbCAYrDzh00E0c0b4h400000000h4g000000014h000000004h400000000p16000000";
+      break;
+      case "6":
+        urls.value = "https://andrebariani.github.io/baribox/#u5N08Untitledn310s0k02l00e03t1Ua7g0fj07r3O_U00000000i0o321T1v0pu37f0000qwB16110Oa1d030AbF6B0Q4dirP9996R0000E2c0b8638T1v0pu77f010o900qsd15G3100oaad030A1F9B4Q5447Pfb94R0000E2c062c63eT1v0pu9bf020m813400qsd03I3300dald350A9F3B5Qa86ePfd78R0000E0c0T4v0puf0f1a0qsd31w15007a1z8888onapap4oSBKSJJAArriiiiii07JCABrzrrrrrrr00YrkqHrsrrrrjr005zrAqzrjzrrqr1jRjrqGGrrzsrsA099ijrABJJJIAzrrtirqrqjqixzsrAjrqjiqaqqysttAJqjikikrizrHtBJJAzArzrIsRCITKSS099ijrAJS____Qg99habbCAYrDzh00E0c0b4h400000000h4g000000014h000000004h400000000p16000000";
+      break;
+      case "7":
+        urls.value = "https://voxeldeev.github.io/voxbox/website/#v2N08Untitledn310s0k02l00e03t1Ua7g0fj07r3O_U00000000i0o321T1v0pu64f0000qwB16010Oa1d080A1F2B5Q64g4Pe64bR0000E3c0b9062a0790T0v0pu98f153q8720Oa71d4a0w50h2y0000000000000w000000E0c0T1v0pu31f0000qwB19110Oa1d080AbF6B2Q4cfrP7b72R0000E3c0ba063907o0T2v0pu15f180q040Oad030w0h0E0c0b4h400000000h4g000000014h000000004h400000000p16000000";
+      break;
+      case "8":
+        urls.value = "https://sxomus.neocities.org/axobox/#u5N08Untitledn310s0k02l00e03t1Ua7g0fj07r3O_U00000000i0o321Tbv0puhaf020x815600qiD000110p7200Oa50d040AtF1B0Q4568afPdfa796R333333E0c0T1v0pu39f0000qwB16210Oa1d080A0F0B0Q7er4Pa610R0000E3c0ba61a628T3v0iui2f0000q0B010j5000Oaad190SXi9980000000000h0E1c0b9T4v0puf0f1a0q050Oa1z8888onapap4oSBKSJJAArriiiiii07JCABrzrrrrrrr00YrkqHrsrrrrjr005zrAqzrjzrrqr1jRjrqGGrrzsrsA099ijrABJJJIAzrrtirqrqjqixzsrAjrqjiqaqqysttAJqjikikrizrHtBJJAzArzrIsRCITKSS099ijrAJS____Qg99habbCAYrDzh00E0c0b4h400000000h4g000000014h000000004h400000000p16000000";
+      break;
+      default: break;
+    }
+  }
+
+
   
   window.onload = function ()
   {

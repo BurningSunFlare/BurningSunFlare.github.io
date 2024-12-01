@@ -1,12 +1,12 @@
 {
   "title": "Default Title TEST",
-  "image": "http://127.0.0.1:5500/Images/Icon/Kittyd.gif",
+  "image": "/Images/Icon/Kittyd.gif",
   "credits": "CREDITS TEST",
   "collections": [
     {
       "title": "Collection Title",
       "description": "Collection Description",
-      "image": "http://127.0.0.1:5500/Images/Icon/missing.gif",
+      "image": "/Images/Icon/missing.gif",
       "credits": "Collection Credits TEST",
       "items": [
         {
