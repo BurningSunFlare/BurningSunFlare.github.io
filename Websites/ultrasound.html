@@ -1207,9 +1207,10 @@ Promise.all( sampleUrls.map( loadSample ) ).then
               max="120" 
               value="60"
               id=musical${totalcontainers}
-              class="hidden samplestuff${totalcontainers} musical${totalcontainers} button_loop inbox semishort supershort all${totalitems} everything"
+              class="hidden samplestuff${totalcontainers} musical${totalcontainers} inbox semishort supershort all${totalitems} everything"
               oninput="updateNote( this, ${totalcontainers} )">
             <b class="hidden noteDisplay${totalcontainers} inbox samplestuff${totalcontainers}">C4</b>
+            
           `;
 
           itemsContainer.appendChild(itemElement);
@@ -1464,14 +1465,15 @@ async function soundplayer(num, sampleBuffer)
   
     document.querySelectorAll('.collection .item').forEach(item => {
       const inputs = item.querySelectorAll('input');
-      const soundNameInput = inputs[0];
-      const loopStartInput = inputs[1];
-      const loopEndInput = inputs[2];
-      const offsetInput = inputs[3];
-      const loopTypeSelect = item.querySelector('select');
-      const backwardsCheckbox = item.querySelector('input[type="checkbox"]');
-      const linkInput = inputs[5];
-      const exportCheckbox = item.querySelector('input[type="checkbox"]:last-of-type');
+      const inputz = item.querySelectorAll('.everything');
+      const soundNameInput = inputz[0];
+      const loopStartInput = inputz[1];
+      const loopEndInput = inputz[2];
+      const offsetInput = inputz[3];
+      const loopTypeSelect = inputz[4];
+      const backwardsCheckbox = inputz[5];
+      const linkInput = inputz[7];
+      const exportCheckbox = inputz[8];
   
       if (exportCheckbox && exportCheckbox.checked) {
         const soundName = encodeURIComponent(soundNameInput ? soundNameInput.value : '');
