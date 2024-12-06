@@ -386,24 +386,26 @@ h2 {text-align: center;}
 <div id="editor-container">
   <h1>CSS Element Editor</h1>
   <div>
-      <label for="css-element" onclick="createInput(event, this)">Select CSS Element:</label>
-      <select id="css-element">
+      <label for="css-element" class="inbox" onclick="createInput(event, this)">Select CSS Element:</label>
+      <select id="css-element" class="inbox semishort">
+          <option value=""></option>
           <option value="body">body</option>
           <option value="body.non-chromium">body.non-chromium</option>
-          <option value=".rainbow">.rainbow</option>
+          <option value="div">div</option>
+          <option value="::placeholder">::placeholder</option>
+          <option value=".collection, item">.collection, .item</option>
+          <option value=".inbox">inbox</option>
+          <option value=".inbox:hover">inbox:hover</option>
+          <option value=".inbox:focus">inbox:focus</option>
       </select>
   </div>
-  <textarea id="css-textbox" rows="10" placeholder="Edit CSS properties here..."></textarea>
-  <div id="color-picker-container">
-      <label for="color-picker">Choose a color:</label>
-      <input type="color" id="color-picker" />
-  </div>
+  <textarea id="css-textbox" class="inbox" rows="10" style="width: 784px; height: 228px;" placeholder="Edit CSS properties here..."></textarea>
   <div id="controls">
-    <button id="copy-css">Copy to Clipboard</button>
-    <button id="save-json">Save as JSON</button>
-    <button id="load-json">Load JSON</button>
-    <button id="add-to-export">Add To Export</button>
-    <button id="export-items">List Of Items:</button>
+    <button class="inbox semishort"id="copy-css">Copy to Clipboard</button>
+    <button class="inbox semishort"id="save-json">Save as JSON</button>
+    <button class="inbox semishort"id="load-json">Load JSON</button>
+    <button class="inbox semishort"id="add-to-export">Add To Export</button>
+    <button class="inbox semishort"id="export-items">List Of Items:</button>
     <input type="file" id="file-input" accept=".json" hidden />
 </div>
 </div>

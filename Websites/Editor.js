@@ -1,10 +1,10 @@
 function createInput(event, elem)
 {
     var newthing = document.createElement("p");
-    newthing.textContent = "TEST BABIES";
-    //newthing.style.border = "20px solid";
+    newthing.textContent = `ID: ${elem.name} Class:${Array.from(elem.classList)}`;
     newthing.classList.add ("button3");
-    elem.appendChild(newthing); // Your existing code
+    newthing.classList.add ("todelete");
+    elem.appendChild(newthing);
   
   
     var x = event.clientX;
@@ -13,6 +13,12 @@ function createInput(event, elem)
     newthing.style.position = "fixed";
     newthing.style.left = x + "px";
     newthing.style.top = y + "px";
+
+    var diddy = document.getElementsByClassName("todelete");
+    for (i = 0; i < diddy.length - 1; i++)
+    {
+        diddy[i].remove();
+    }
 }
 
 doelems();
@@ -33,19 +39,146 @@ async function doelems()
         };
     }
 }
-const cssElements = {
+const cssElements =
+{
     body:
     {
-properties:
+        properties:
 `background: linear-gradient(to left, #0e052e, #1c1c1c);
 color: lightskyblue;
 animation: body 10s ease-in-out infinite;
 background-size: 400% 100%;
 box-shadow: 5px 10px 8px hsl(241, 86%, 11%)`
-    }
+    },
+    "body.non-chromium":
+    {
+            properties:
+`background: linear-gradient(to left, #0e052e, #1c1c1c);`
+    },
+    "div":
+    {
+        properties:
+`box-shadow: 5px 10px 8px hsl(241, 86%, 11%)`
+    },
+    "::placeholder":
+    {
+        properties:
+`
+color:cornflowerblue
+`
+    },
+".collection, item":
+    {
+        properties:
+`
+.collection, .item
+{
+border: 1px dashed #2959c9;
+padding: 5px;
+margin-top: 5px;
+box-shadow: 5px 6px 8px #0d1f4885
+}
+`
+    },
+".inbox":
+    {
+        properties:
+`
+background-color: #56209e43;
+color: rgb(147, 194, 255);
+border: 2px solid #4a297e;
+border-radius: 8px;
+`
+    },
+".inbox:hover":
+    {
+        properties:
+`
+border-color: #7426b3;
+`
+    },
+".inbox:focus":
+    {
+        properties:
+`
+outline: 2px solid #7426b3;
+font-weight:bold;
+color: rgb(147, 255, 194);
+`
+    },
+".empty":
+    {
+        properties:
+`
 
-}; // Store custom CSS for each element
-let exportList = {}; // Store enabled CSS for export
+`
+    },
+".empty":
+    {
+        properties:
+`
+
+`
+    },
+".empty":
+    {
+        properties:
+`
+
+`
+    },
+".empty":
+    {
+        properties:
+`
+
+`
+    },
+".empty":
+    {
+        properties:
+`
+
+`
+    },
+".empty":
+    {
+        properties:
+`
+
+`
+    },
+".empty":
+    {
+        properties:
+`
+
+`
+    },
+".empty":
+    {
+        properties:
+`
+
+`
+    },
+".empty":
+    {
+        properties:
+`
+
+`
+    },
+".empty":
+    {
+        properties:
+`
+
+`
+    },
+
+};
+let exportList = {};
 
 const cssElementSelect = document.getElementById("css-element");
 const cssTextbox = document.getElementById("css-textbox");
@@ -94,13 +227,6 @@ cssTextbox.addEventListener("input", () => {
     applyStyles();
 });
 
-// Sync color picker with the text box
-colorPicker.addEventListener("input", (e) => {
-    const colorValue = e.target.value;
-    cssTextbox.value = cssTextbox.value.replace(/#([0-9A-Fa-f]{6})/g, colorValue);
-    cssElements[cssElementSelect.value] = { properties: cssTextbox.value };
-    applyStyles();
-});
 
 // Add element to the export list
 addToExportButton.addEventListener("click", () => {
@@ -179,3 +305,4 @@ fileInput.addEventListener("change", (e) => {
         reader.readAsText(file);
     }
 });
+applyStyles();
