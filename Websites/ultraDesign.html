@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-  <script src="console.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon"; type="image/png"; href="/Images/Icon/Main.png">
@@ -371,6 +369,7 @@ a:hover
 
 h2 {text-align: center;}
 
+
   </style>
 </head>
 <body>
@@ -384,6 +383,32 @@ h2 {text-align: center;}
     <option value="2">Bubblegum Theme</option>
 </select>
 </div>
+<div id="editor-container">
+  <h1>CSS Element Editor</h1>
+  <div>
+      <label for="css-element" onclick="createInput(event, this)">Select CSS Element:</label>
+      <select id="css-element">
+          <option value="body">body</option>
+          <option value="body.non-chromium">body.non-chromium</option>
+          <option value=".rainbow">.rainbow</option>
+      </select>
+  </div>
+  <textarea id="css-textbox" rows="10" placeholder="Edit CSS properties here..."></textarea>
+  <div id="color-picker-container">
+      <label for="color-picker">Choose a color:</label>
+      <input type="color" id="color-picker" />
+  </div>
+  <div id="controls">
+    <button id="copy-css">Copy to Clipboard</button>
+    <button id="save-json">Save as JSON</button>
+    <button id="load-json">Load JSON</button>
+    <button id="add-to-export">Add To Export</button>
+    <button id="export-items">List Of Items:</button>
+    <input type="file" id="file-input" accept=".json" hidden />
+</div>
+</div>
+
+
 <p class = "hidden mainboy"></p>
 <div id="mainBox" class="box">
   <h3 id="mainTitle" contenteditable="true">Default Title</h3>
@@ -950,6 +975,8 @@ const audioCtx = new AudioContext();
 
 
   </script>
+
+<script src="Editor.js"></script>
 
 </body>
 </html>

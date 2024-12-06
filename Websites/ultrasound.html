@@ -440,7 +440,9 @@ h2 {text-align: center;}
   <!-- button onclick="createBox()" class="button1">Create Box</button -->
   
   <button onclick="uploadJSON()" class="button1" id="daclear">Upload JSON</button>
+  <button onclick="uploadJSONEdit()" class="button1" id="daclear2">Upload JSON (Edit mode)</button>
   <input type="file" id="fileInput" class="hidden" accept=".json" onchange="loadJSON(this.files)">
+  <input type="file" id="fileInputEdit" class="hidden" accept=".json" onchange="loadJSONEdit(this.files)">
   <button onclick="downloadJSON()" class="button1">Save JSON</button>
   Themer: <select id="themer" class="inbox semishort">
     <option value="1" selected>Default</option>
@@ -502,14 +504,15 @@ I made this entirely with the purpose of freedom to do what you want, and I hold
  </li>
 </ol>
 <br>
-<p>Please know that im still very new to html and of it's forms.
+
+<!-- p>Please know that im still very new to html and of it's forms.
   You cannot edit your files directly on the website, after it's been created. Yeah, lame.
   I made a seperate website that was just intended for me and a friend so we can edit our json files.
   My original thought was that I didn't want people to skid others work and discredit anyone.
   I am now making the decision to make it so you can edit it straight through here. Just give me some time to do this.
   In the meantime, you can use the outdated dev site I created. The password is Pineapple: <a href="/Websites/ultrasoundEdit.html">Ultrasound Editor</a>
   If you're using Firefox or safari, or anything non chromium based, prepare to LAG HARD.
-</p>
+</p -->
 
 <image class="hotdog" id="hotdog" src="/Images/Icon/hotdog.png" width="256" height="256"></image>
     <br>
@@ -1145,17 +1148,40 @@ const audioCtx = new AudioContext();
       <label>Link: <input type="text" placeholder="Enter item link" value="${data ? data.link : ''}"class="inbox"></label>
       <label> <input type="checkbox" ${data && data.export ? 'checked' : ''} class="hidden"></label>
     `;
-    //<label>Export: <input type="checkbox" ${data && data.export ? 'checked' : ''}></label>
   
     button.nextElementSibling.appendChild(itemContainer);
   }
+
+function clearFileInput(id) 
+{ 
+    var oldInput = document.getElementById(id); 
+
+    var newInput = document.createElement("input"); 
+
+    newInput.type = "file"; 
+    newInput.id = oldInput.id; 
+    newInput.name = oldInput.name; 
+    newInput.className = oldInput.className; 
+    newInput.style.cssText = oldInput.style.cssText; 
+
+    oldInput.parentNode.replaceChild(newInput, oldInput); 
+}
   
-  function uploadJSON() {
+  function uploadJSON()
+  {
     document.getElementById("fileInput").click();
     document.getElementById("daclear").value = "";
+    document.getElementById("fileInput").value = "";
   }
-  
-  function loadJSON(files) {
+
+  function uploadJSONEdit()
+  {
+    document.getElementById("fileInputEdit").click();
+    document.getElementById("fileInputEdit").value = "";
+    document.getElementById("daclear2").value = "";
+  }
+  function loadJSON(files) 
+  {
     const file = files[0];
     if (!file) return;
   
@@ -1166,8 +1192,45 @@ const audioCtx = new AudioContext();
     };
     reader.readAsText(file);
   }
+
+  function loadJSONEdit(files) 
+  {
+    const file = files[0];
+    if (!file) return;
   
-  function populateData(jsonData) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const data = JSON.parse(e.target.result);
+      populateDataEdit(data);
+    };
+    reader.readAsText(file);
+  }
+
+function populateDataEdit(jsonData)
+{
+  if (!jsonData)
+  {
+    alert("Invalid JSON format or missing data.");
+    return;
+  }
+
+  const mainData = jsonData;
+
+  document.getElementById("mainTitle").textContent = mainData.title || "Default Title";
+  document.getElementById("mainImage").src = mainData.image || "/Images/Icon/missing.gif";
+  document.getElementById("mainCredits").textContent = mainData.credits || "This is where the credits go";
+
+  const collectionsContainer = document.getElementById("collectionsContainer");
+  collectionsContainer.innerHTML = "";
+
+  if (mainData.collections && mainData.collections.length > 0)
+  {
+    mainData.collections.forEach(collectionData => addCollection(collectionData));
+  }
+}
+  
+  function populateData(jsonData) 
+  {
     if (!jsonData) {
       alert("Invalid JSON format or missing data.");
       return;
