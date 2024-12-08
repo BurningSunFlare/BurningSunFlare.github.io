@@ -1090,7 +1090,11 @@ const sampleUrls =
   function addCollection(data = null)
   {
     const container = document.createElement("div");
+    const howmany = document.getElementsByClassName("collection");
     container.classList.add("collection");
+
+    container.classList.add(`collection_${howmany.length + 1}`);
+    collectionData.title = replaceCurrent( collectionData.title, howmany.length + 1 );
   
     const collectionImageId = `collectionImage${document.getElementsByClassName('collection').length}`;
     container.innerHTML = `
@@ -1240,6 +1244,11 @@ function populateDataEdit(jsonData)
   }
 }
   
+function replaceCurrent( daStr, what )
+{
+  return daStr
+  .replace( /%currt%/g, what );
+}
   function populateData(jsonData) 
   {
     if (!jsonData) {
@@ -1263,7 +1272,13 @@ function populateDataEdit(jsonData)
     mainData.collections.forEach(collectionData => {
       const collectionElement = document.createElement("div");
       collectionElement.classList.add("collection");
-  
+      const howmany = document.getElementsByClassName("collection");
+
+      collectionElement.classList.add(`collection_${howmany.length + 1}`);
+      collectionData.title = replaceCurrent( collectionData.title, howmany.length + 1 );
+      collectionData.description = replaceCurrent( collectionData.description, howmany.length + 1 );
+      collectionData.credits = replaceCurrent( collectionData.credits, howmany.length + 1 );
+
       collectionElement.innerHTML = `
         <h4>${collectionData.title || "Collection Title"}</h4>
         <p>${collectionData.description || "Collection Description"}</p>
