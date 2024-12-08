@@ -1322,14 +1322,14 @@ function replaceCurrent( daStr, what )
             <option value="7">Appregio</option>
             <option value="8">Aggressive Appregio</option>
             </select>
-            <label for="musical${totalcontainers}"></label>
+            <label class="allmusic" for="musical${totalcontainers}"></label>
             <input 
               type="number"
               min="12" 
               max="120" 
               value="60"
               id=musical${totalcontainers}
-              class="hidden samplestuff${totalcontainers} musical${totalcontainers} inbox semishort supershort all${totalitems} everything"
+              class="hidden allmusic samplestuff${totalcontainers} musical${totalcontainers} inbox semishort supershort all${totalitems} everything"
               oninput="updateNote( this, ${totalcontainers} )">
             <b class="hidden noteDisplay${totalcontainers} inbox samplestuff${totalcontainers}">C4</b>
           `;
@@ -1346,18 +1346,16 @@ function replaceCurrent( daStr, what )
     });
 
 
-      for (let index = 0; index < totalcontainers; index++)
+      const allMusicElements = document.querySelectorAll('.allmusic');
+      allMusicElements.forEach((music) =>
       {
-        const musics = document.getElementsByClassName(`musical${index}`);
-        if (musics.length === 0) continue;
-          
-        musics[0].addEventListener("keydown", (e) =>
-        {
-          if (e.keyCode !== 38 && e.keyCode !== 40) e.preventDefault();
-          musics[0].dataset.number = totalcontainers;
-          console.log(`${musics[0].dataset.number}`);
-        });
-      }
+          music.dataset.number = totalcontainers;
+          music.addEventListener("keydown", (e) =>
+          {
+              if (e.keyCode !== 38 && e.keyCode !== 40) e.preventDefault();
+              console.log(`${music.dataset.number}`);
+          });
+      });
     }
   }
 
