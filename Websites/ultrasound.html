@@ -1206,6 +1206,8 @@ function clearFileInput(id)
     reader.readAsText(file);
   }
 
+
+  
 function populateDataEdit(jsonData)
 {
   if (!jsonData)
@@ -1214,18 +1216,39 @@ function populateDataEdit(jsonData)
     return;
   }
 
+  const escapeHtml = (text) =>
+  {
+    console.log(text);
+    if (!text) return text;
+    return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  };
+  
+  function replacer(data = null)
+  {
+    if (!data) return;
+    data.title = escapeHtml(data.title);
+    data.description = escapeHtml(data.description);
+    data.credits = escapeHtml(data.credits);
+  }
   const mainData = jsonData;
 
-  document.getElementById("mainTitle").textContent = mainData.title || "Default Title";
+  document.getElementById("mainTitle").innerHTML = escapeHtml(mainData.title) || "Default Title";
+  document.getElementById("mainCredits").innerHTML = escapeHtml(mainData.credits) || "This is where the credits go";
   document.getElementById("mainImage").src = mainData.image || "/Images/Icon/missing.gif";
-  document.getElementById("mainCredits").textContent = mainData.credits || "This is where the credits go";
 
   const collectionsContainer = document.getElementById("collectionsContainer");
   collectionsContainer.innerHTML = "";
 
   if (mainData.collections && mainData.collections.length > 0)
   {
-    mainData.collections.forEach(collectionData => addCollection(collectionData));
+    mainData.collections.forEach(collectionData =>
+    {
+      replacer(collectionData);
+      addCollection(collectionData);
+    });
   }
 }
   
@@ -1263,6 +1286,7 @@ function populateDataEdit(jsonData)
       const itemsContainer = collectionElement.querySelector(".items-container");
       if (collectionData.items && collectionData.items.length > 0) {
         collectionData.items.forEach(item => {
+          item.link = item.link.replace( /'/g, "%27" );
           const itemElement = document.createElement("div");
           itemElement.classList.add("item");
   
@@ -1317,20 +1341,19 @@ function populateDataEdit(jsonData)
     });
 
 
-    for( let index = 0; index < totalcontainers; index++ )
-    {
-      const musics = document.getElementsByClassName(`musical${index}`);
-      //console.log(index);
-      musics[0].addEventListener("keydown", e =>
+      for (let index = 0; index < totalcontainers; index++)
       {
-        if (e.keyCode !== 38 && e.keyCode !== 40) e.preventDefault();
-        musics[0].dataset.number = totalcontainers;
-        console.log( `${musics[0].dataset.number}` );
-      });
+        const musics = document.getElementsByClassName(`musical${index}`);
+        if (musics.length === 0) continue;
+          
+        musics[0].addEventListener("keydown", (e) =>
+        {
+          if (e.keyCode !== 38 && e.keyCode !== 40) e.preventDefault();
+          musics[0].dataset.number = totalcontainers;
+          console.log(`${musics[0].dataset.number}`);
+        });
+      }
     }
-
-  }
-  
   }
 
   function unhide_elements(num, self, samplelink)
