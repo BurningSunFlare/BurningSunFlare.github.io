@@ -1294,6 +1294,7 @@ function replaceCurrent( daStr, what )
           item.link = item.link.replace( /'/g, "%27" );
           const itemElement = document.createElement("div");
           itemElement.classList.add("item");
+          itemElement.classList.add(`div_${howmany.length + 1}`);
   
           itemElement.innerHTML = `
             <input class="button_sound inbox all${totalitems} everything collection_sound${totalitems}" type="text" value="${item.soundName || ''}" placeholder="Sound Name">
