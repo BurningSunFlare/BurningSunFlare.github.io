@@ -233,7 +233,6 @@ footer p{ text-align: center; }
 }
     ::placeholder{ color:cornflowerblue }
     .box { border: 1px solid #34179d; padding: 10px; margin: 10px; background-color: hsl(211, 94%, 6%); box-shadow: 5px 10px 8px hsl(241, 86%, 11%); background: transparent;background-image: none; }
-    .hidden { display: none; }
     .collection, .item { border: 1px dashed #2959c9; padding: 5px; margin-top: 5px; box-shadow: 5px 6px 8px #0d1f4885 }
     .inbox
     {
@@ -428,7 +427,7 @@ a:hover
 }
 
 h2 {text-align: center;}
-
+.hidden { display: none !important; }
   </style>
 </head>
 <body>
@@ -454,7 +453,7 @@ h2 {text-align: center;}
   <h3 id="mainTitle" contenteditable="true">Default Title</h3>
   <img id="mainImage" src="/Images/Icon/Kittyd.gif" alt="Main Image" width="256" height="256" class="frame">
   <br>
-  <input type="file" onchange="updateImage(this, 'mainImage')" class="upload">
+  <input id="buttonHide" type="file" onchange="updateImage(this, 'mainImage')" class="upload">
   <p id="mainCredits" contenteditable="true">This is where the credits go</p>
   <button class="button3" onclick="addCollection()">Add Collection</button>
   <div id="collectionsContainer"></div>
@@ -1054,15 +1053,6 @@ const audioCtx = new AudioContext();
     return new Promise(resolve => setTimeout(resolve, ms));
   }
   
-  async function delay_test()
-  {
-    console.log( 'Hello' );
-      await sleep( 2000 );
-    console.log( 'World!' );
-      await sleep( 2000 );
-    console.log( 'Goodbye!' );
-  }
-  delay_test()
   function getCookie( name )
   {
     const cookies = document.cookie.split( "; " );
@@ -1113,9 +1103,8 @@ const audioCtx = new AudioContext();
       <input type="file" onchange="updateImage(this, '${collectionImageId}')" class="upload"">
       <p contenteditable="true">${data ? data.credits : 'Collection Credits'}</p>
       <button class="button3" onclick="addItem(this)">Add Item</button>
-      <div class="items-container hidden"></div> <!-- Items container is hidden initially -->
-      <span class="dropdown-arrow" onclick="toggleItemsVisibility(this)">&#9660;</span> <!-- Dropdown arrow -->
-    `;
+      <div class="items-container hidden"></div>
+      <span class="dropdown-arrow" onclick="toggleItemsVisibility(this)">&#9660;</span>`;
   
     const itemsContainer = container.querySelector(".items-container");
     if ( data && data.items )
@@ -1218,7 +1207,6 @@ function populateDataEdit(jsonData)
 
   const escapeHtml = (text) =>
   {
-    console.log(text);
     if (!text) return text;
     return text
       .replace(/&/g, "&amp;")
@@ -1238,7 +1226,9 @@ function populateDataEdit(jsonData)
   document.getElementById("mainTitle").innerHTML = escapeHtml(mainData.title) || "Default Title";
   document.getElementById("mainCredits").innerHTML = escapeHtml(mainData.credits) || "This is where the credits go";
   document.getElementById("mainImage").src = mainData.image || "/Images/Icon/missing.gif";
-
+  document.getElementById("mainTitle").contentEditable = true;
+  document.getElementById("mainCredits").contentEditable = true;
+  document.getElementById("buttonHide").classList.remove("hidden");
   const collectionsContainer = document.getElementById("collectionsContainer");
   collectionsContainer.innerHTML = "";
 
@@ -1264,7 +1254,9 @@ function populateDataEdit(jsonData)
     document.getElementById("mainTitle").innerHTML = mainData.title || "Default Title";
     document.getElementById("mainImage").innerHTML = `<img src="${mainData.image || "/Images/Icon/missing.gif"}" alt="Main Image">`;
     document.getElementById("mainCredits").innerHTML = mainData.credits || "This is where the credits go";
-
+    document.getElementById("mainTitle").contentEditable = false;
+    document.getElementById("mainCredits").contentEditable = false;
+    document.getElementById("buttonHide").classList.add("hidden");
   
     const collectionsContainer = document.getElementById("collectionsContainer");
     collectionsContainer.innerHTML = "";
@@ -1326,7 +1318,6 @@ function populateDataEdit(jsonData)
               class="hidden samplestuff${totalcontainers} musical${totalcontainers} inbox semishort supershort all${totalitems} everything"
               oninput="updateNote( this, ${totalcontainers} )">
             <b class="hidden noteDisplay${totalcontainers} inbox samplestuff${totalcontainers}">C4</b>
-            
           `;
 
           itemsContainer.appendChild(itemElement);
