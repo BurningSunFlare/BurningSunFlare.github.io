@@ -1608,7 +1608,8 @@ async function soundplayer(num, sampleBuffer)
     });
   
     console.log(baseUrl + exportStr);
-    window.location.href = baseUrl + exportStr;
+    //window.location.href = baseUrl + exportStr;
+    window.open(baseUrl + exportStr,'_blank');
   }
   
   

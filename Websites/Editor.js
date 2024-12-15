@@ -25,19 +25,23 @@ doelems();
 
 async function doelems()
 {
+    /*let orig = [];
     await sleep(1000); const ever = document.getElementsByClassName('everything');
     for (let i = 0; i < ever.length; i++)
     {
+        orig.push( ever[i].textContent );
         ever[i].onmouseover = function ()
         {
-            this.textContent = "Text changed!";
+            console.log( ever[i].type );
+            ever[i].textContent = "Text changed!";
         };
 
         ever[i].onmouseout = function ()
         {
-            this.textContent = "Hover over me!";
+            ever[i].textContent = orig[i];
         };
     }
+    */
 }
 const cssElements =
 {
@@ -58,7 +62,7 @@ box-shadow: 5px 10px 8px hsl(241, 86%, 11%)`
     "div":
     {
         properties:
-`box-shadow: 5px 10px 8px hsl(241, 86%, 11%)`
+`box-shadow: 5px 10px 8px hsl(241, 86%, 11%);`
     },
     "::placeholder":
     {
@@ -76,7 +80,7 @@ color:cornflowerblue
 border: 1px dashed #2959c9;
 padding: 5px;
 margin-top: 5px;
-box-shadow: 5px 6px 8px #0d1f4885
+box-shadow: 5px 6px 8px #0d1f4885;
 }
 `
     },
