@@ -701,7 +701,7 @@ const sampleUrls =
 ];
 
   let isEditMode = true;
-  let totalitems = 1;
+  let totalitems = 0;
   let totalcontainers = 0;
   var isPlaying = false;
   var isWaiting = false;
@@ -1201,6 +1201,7 @@ function clearFileInput(id)
   
 function populateDataEdit(jsonData)
 {
+  totalitems = 1;
   if (!jsonData)
   {
     alert("Invalid JSON format or missing data.");
@@ -1251,7 +1252,9 @@ function replaceCurrent( daStr, what )
 }
   function populateData(jsonData) 
   {
-    if (!jsonData) {
+    totalitems = 1;
+    if (!jsonData)
+    {
       alert("Invalid JSON format or missing data.");
       return;
     }
@@ -1309,10 +1312,10 @@ function replaceCurrent( daStr, what )
             </select>
             <input class="button_backward tick all${totalitems} everything collection_backward${totalitems}" type="checkbox" ${item.backwards ? 'checked' : ''}> <knot class="button_backward all${totalitems} everything collection_backward${totalitems}">Backwards</knot>
             <input class="button_link inbox semishort all${totalitems} everything collection_link${totalitems}" type="text" value="${item.link || ''}" placeholder="Item Link">
-            <input class="button_export tick checkbox all${totalitems} everything collection_export${totalitems}" type="checkbox" ${item.export ? 'checked' : ''}> Export
+            <input class="button_export tick checkbox all${totalitems} everything collection_export${totalitems}" type="checkbox" ${item.export ? 'checked' : ''}> <knot class="button_backward all${totalitems} everything collection_backward${totalitems}">Export</knot>
 
-            <button onclick="unhide_elements( ${totalcontainers}, this, '${item.link}' )"class="inbox semishort">Play</button>
-            <select id="Playful${totalcontainers}" class="hidden samplestuff${totalcontainers} Playful${totalcontainers} inbox semishort">
+            <button onclick="unhide_elements( ${totalcontainers}, this, '${item.link}' )"class="all${totalitems} inbox semishort">Play</button>
+            <select id="Playful${totalcontainers}" class="all${totalitems} hidden samplestuff${totalcontainers} Playful${totalcontainers} inbox semishort">
             <option value="1" selected>Once</option>
             <option value="2">Major</option>
             <option value="3">Minor</option>
@@ -1322,14 +1325,14 @@ function replaceCurrent( daStr, what )
             <option value="7">Appregio</option>
             <option value="8">Aggressive Appregio</option>
             </select>
-            <label class="allmusic" for="musical${totalcontainers}"></label>
+            <label class="all${totalitems} allmusic" for="musical${totalcontainers}"></label>
             <input 
               type="number"
               min="12" 
               max="120" 
               value="60"
               id=musical${totalcontainers}
-              class="hidden allmusic samplestuff${totalcontainers} musical${totalcontainers} inbox semishort supershort all${totalitems} everything"
+              class="hidden all${totalitems} allmusic samplestuff${totalcontainers} musical${totalcontainers} inbox semishort supershort all${totalitems} everything"
               oninput="updateNote( this, ${totalcontainers} )">
             <b class="hidden noteDisplay${totalcontainers} inbox samplestuff${totalcontainers}">C4</b>
           `;
