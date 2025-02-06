@@ -274,6 +274,11 @@ aside {
 			<div class="footer-area">
 				<details>
 					<summary>Changelog</summary>
+					<h3>v1.5.1(Unofficial)</h3>
+					<ul>
+						<li>Exporting sounds as json will not loop if the loop is too small</li>
+						<i>This should prevent errors with loops so they dont loop when not supposed to</i>
+					</ul>
           <h3>v1.5(Unofficial)</h3>
 					<ul>
 						<li>Exporting Names Now Tracks Correctly( JSON )</li>
@@ -5643,6 +5648,8 @@ function exportAsJSON( shouldResample, outputSampleRate, samples, useInstrumentN
 		exportedNames.push( [ name, sample.data.length, ( sample.loopStart / sample.sampleRate ) * 44100, ( sample.loopEnd / sample.sampleRate ) * 44100 ] );
 		//dirStructure[name] = new Uint8Array(wavData);
 	}
+	let min = 0;
+	let max = 0;
 let symbol = "},"
 let loop = "d0"
 
@@ -5662,6 +5669,38 @@ var fileContent =
 
 	  for( let index = 0; index < exportedNames.length; index++ )
 	  {
+		
+		if( exportedNames[index][2] <= 800 )
+		{
+			max = 94;
+			min = 4;
+		}
+		else if( exportedNames[index][2] <= 2500 )
+		{
+			max = 96;
+			min = 4;
+		}
+		else if( exportedNames[index][2] <= 5500 )
+		{
+			max = 97;
+			min = 3;
+		}
+		else if( exportedNames[index][2] <= 8000 )
+		{
+			max = 98;
+			min = 2;
+		}
+		else if( exportedNames[index][2] <= 15000 )
+		{
+			max = 99;
+			min = 1;
+		}
+		else
+		{
+			max = 99.5;
+			min = 0.5;
+		}
+
 		if( exportedNames[index][2] > 0 )
 		{
 		  loop = "d0";
@@ -5669,6 +5708,11 @@ var fileContent =
 		else
 		{
 		  loop = "d2";
+		}
+
+		if( ( exportedNames[index][2] / exportedNames[index][3] * 100 ) > max || ( exportedNames[index][2] / exportedNames[index][3] * 100 ) < min  )
+		{
+			exportedNames[index][2] = 0;
 		}
 
 		if( index == exportedNames.length - 1 )
