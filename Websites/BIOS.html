@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title id="mainPage">URL Hash Example</title>
+</head>
+<body>
+  <h1 class="test">LOADING...</h1>
+
+  <script>
+  
+  let divs = 0;
+  const newDiv = document.createElement("div");
+  newDiv.id = "content";
+  newDiv.className = "testa";
+  document.body.appendChild(newDiv);
+  
+  function divMaker( text, i )
+  {
+     let data = text.split("$&");
+    let newDiva = document.createElement("div");
+     for( let v = 0; v < data.length; v++ )
+       {
+         switch(true)
+          {
+            case data[v].toLowerCase().startsWith( "text" ):
+            newDiva.innerHTML = data[v].substring(4) + "<hr>";
+            break;
+            
+            case data[v].toLowerCase().startsWith( "fsize" ):
+            newDiva.style.fontSize = data[v].substring(5) + "px";
+            break;
+            
+            case data[v].toLowerCase().startsWith( "fcolor" ):
+            newDiva.style.color = "#" + data[v].substring(6);
+            break;
+            
+          }
+       }
+     
+     newDiva.id = `Div${i}`;
+     newDiva.className = "CreatedDiv";
+     newDiv.appendChild(newDiva);
+  }
+  
+  function updateTextFromHash() 
+  {
+    let hash = window.location.hash.substring(1);
+    if (hash)
+    {
+      const hashParts = window.location.hash.substring(1).split('#');
+      let newDiva = undefined;
+      for( let i=1; i < hashParts.length; i++ )
+        {
+          switch(true)
+          {
+            case decodeURIComponent( hashParts[i] ).toLowerCase().startsWith( "div" ):
+            divMaker( decodeURIComponent( hashParts[i].substring(3) ), i );
+            break;
+          }
+        }
+
+      let elements = document.querySelectorAll('.test');
+      elements.forEach(element => 
+      {
+          element.textContent = decodeURIComponent( hashParts[0] ); // Decode in case of spaces/special chars
+      });
+    }
+    else
+    {
+      let elements = document.querySelectorAll('.test');
+      elements.forEach(element => 
+      {
+          element.textContent = decodeURIComponent( "Welcome To Bios" );
+      });
+    }
+  }
+
+    // Run on page load
+    document.addEventListener('DOMContentLoaded', updateTextFromHash);
+
+    // Update if the hash changes (e.g., if user manually edits URL)
+    //window.addEventListener('hashchange', updateTextFromHash);
+  </script>
+</body>
+</html>

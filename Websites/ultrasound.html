@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
   <script src="console.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -477,6 +480,14 @@ h2 {text-align: center;}
   <br>
   <button onclick="exportURLs()" class = "button3">Load Samples</button>
 </div>
+<div>
+  <br>
+  <p>Using file garden, you can add many links and when you refresh the page, it will load the json files!
+    <br>NOTE: YOU NEED COOKIES</p>
+    <button class="POPAdd inbox everything" onclick="addPop(this)" id="SuperPOPular">Add Link</button>
+    <button class="POPREMOVE inbox everything" onclick="SavePops(this)">Save</button>
+    <button class="POPLink inbox everything" onclick="CopyPopsLink(this)">Copy links</button>
+</div>
 <footer>
 <hr>
 <h2>DISCLAIMER:</h2>
@@ -615,7 +626,7 @@ I made this entirely with the purpose of freedom to do what you want, and I hold
 </footer>
 
 <script>
-
+let Pops = 0;
 
 const isChromium = !!window.chrome;
 if ( !isChromium )
@@ -741,7 +752,7 @@ const sampleUrls =
         urls.value = "https://voxeldeev.github.io/voxbox/website/#v2N08Untitledn310s0k02l00e03t1Ua7g0fj07r3O_U00000000i0o321T1v0pu64f0000qwB16010Oa1d080A1F2B5Q64g4Pe64bR0000E3c0b9062a0790T0v0pu98f153q8720Oa71d4a0w50h2y0000000000000w000000E0c0T1v0pu31f0000qwB19110Oa1d080AbF6B2Q4cfrP7b72R0000E3c0ba063907o0T2v0pu15f180q040Oad030w0h0E0c0b4h400000000h4g000000014h000000004h400000000p16000000";
       break;
       case "8":
-        urls.value = "https://axowo.xyz/axobox/#u5N08Untitledn310s1k02l00e03t1Ua7g0fj07r3O_U00000000i0o321T5v0pua5f060lc2dd2j02e02fd17800q8540Oaad260HK_Sziiirrqih99h0E0c0T1v0pub7f0000q0B1830Oa1d230A5F4B9Q4445Pffa7R0000E4c0ba6246347cT1v0puc3f170q050Oa1d230A1F0B2Q4fa4Pc454R0000E2c06327dT4v0puf0f1a0q050Oa1z8888onapap4oSBKSJJAArriiiiii07JCABrzrrrrrrr00YrkqHrsrrrrjr005zrAqzrjzrrqr1jRjrqGGrrzsrsA099ijrABJJJIAzrrtirqrqjqixzsrAjrqjiqaqqysttAJqjikikrizrHtBJJAzArzrIsRCITKSS099ijrAJS____Qg99habbCAYrDzh00E0c0b4h400000000h4g000000014h000000004h400000000p16000000";
+        urls.value = "https://sxomus.neocities.org/axobox/#u5N08Untitledn310s1k02l00e03t1Ua7g0fj07r3O_U00000000i0o321T5v0pua5f060lc2dd2j02e02fd17800q8540Oaad260HK_Sziiirrqih99h0E0c0T1v0pub7f0000q0B1830Oa1d230A5F4B9Q4445Pffa7R0000E4c0ba6246347cT1v0puc3f170q050Oa1d230A1F0B2Q4fa4Pc454R0000E2c06327dT4v0puf0f1a0q050Oa1z8888onapap4oSBKSJJAArriiiiii07JCABrzrrrrrrr00YrkqHrsrrrrjr005zrAqzrjzrrqr1jRjrqGGrrzsrsA099ijrABJJJIAzrrtirqrqjqixzsrAjrqjiqaqqysttAJqjikikrizrHtBJJAzArzrIsRCITKSS099ijrAJS____Qg99habbCAYrDzh00E0c0b4h400000000h4g000000014h000000004h400000000p16000000";
       break;
       default: break;
     }
@@ -1179,7 +1190,7 @@ function clearFileInput(id)
     const reader = new FileReader();
     reader.onload = function(e) {
       const data = JSON.parse(e.target.result);
-      populateData(data);
+      populateData(data, true);
     };
     reader.readAsText(file);
   }
@@ -1250,7 +1261,7 @@ function replaceCurrent( daStr, what )
   return daStr
   .replace( /%currt%/g, what );
 }
-  function populateData(jsonData) 
+  function populateData(jsonData, daRefres) 
   {
     totalitems = 1;
     if (!jsonData)
@@ -1269,8 +1280,11 @@ function replaceCurrent( daStr, what )
     document.getElementById("buttonHide").classList.add("hidden");
   
     const collectionsContainer = document.getElementById("collectionsContainer");
-    collectionsContainer.innerHTML = "";
-
+    if(daRefres)
+    {
+      collectionsContainer.innerHTML = "";
+      LoadTagsURL();
+    }
   if (mainData.collections && mainData.collections.length > 0) {
     mainData.collections.forEach(collectionData => {
       const collectionElement = document.createElement("div");
@@ -1928,6 +1942,148 @@ function randomAwooferEvent()
   }
 
 }
+  function tagz( text, i )
+  {
+     let data = text.split("$&");
+     for( let v = 0; v < data.length; v++ )
+       {
+         switch(true)
+          {
+            case data[v].toLowerCase().startsWith( "pop" ):
+              fetch(data[v].substring(3))
+              .then(response => {
+                if (!response.ok) throw new Error('Network error');
+                return response.json();
+              })
+              .then(data => 
+              {
+                console.log(data);
+                populateData(data);
+              })
+              .catch(error => 
+              {
+                console.error('Error fetching file:', error);
+              });
+            //newDiva.innerHTML = data[v].substring(4) + "<hr>";
+            break;
+            
+          }
+       }
+     
+     //newDiva.id = `Div${i}`;
+     //newDiva.className = "CreatedDiv";
+     //newDiv.appendChild(newDiva);
+  }
+
+ document.addEventListener('DOMContentLoaded', LoadTagsURL);
+  function LoadTagsURL()
+  {
+    let hash = window.location.hash.substring(1);
+    //console.log(hash);
+    if (hash)
+    {
+      const hashParts = window.location.hash.substring(1).split('#');
+      let newDiva = undefined;
+      for( let i=0; i < hashParts.length; i++ )
+        {
+          //console.log(hashParts[i]);
+          switch(true)
+          {
+            case decodeURIComponent( hashParts[i] ).toLowerCase().startsWith( "tagz" ):
+              console.log("entering Tagz");
+            tagz( decodeURIComponent( hashParts[i].substring(4) ), i );
+            break;
+          }
+        }
+    }
+    else
+    {
+      console.log("No Hash");
+    }
+    loadCookiePops();
+  }
+
+
+
+  function addPop(button, Text)
+  {
+    if( Pops > 12 )
+      return;
+    let item = document.createElement("input");
+    let div = document.createElement("div");
+    item.className = "inbox everything poppers";
+    item.placeholder = "Link";
+    if(Text != null)
+      item.value = Text;
+    Pops++;
+    div.appendChild(item);
+    button.insertAdjacentElement("afterend", div);
+    
+  }
+
+  function SavePops(bootan)
+  {
+    
+    let elements = document.querySelectorAll('.poppers');
+    let poptext = "";
+      elements.forEach(element => 
+      {
+          if( element.value.length > 4 )
+          {
+            poptext += `$&POP${element.value}`
+          }
+      });
+    setCookie( "VeryCoolJsons", poptext, 365 );
+    console.log(`Saved ${poptext}`);
+    alert("SAVED!");
+  }
+
+  function loadCookiePops()
+  {
+      let data = getCookie( "VeryCoolJsons" ).split("$&");
+     for( let v = 0; v < data.length; v++ )
+       {
+         switch(true)
+          {
+            case data[v].toLowerCase().startsWith( "pop" ):
+              addPop(document.getElementById("SuperPOPular"), data[v].substring(3) );
+              fetch(data[v].substring(3))
+              .then(response => 
+              {
+                if (!response.ok) throw new Error('Network error');
+                return response.json();
+              })
+              .then(data => 
+              {
+                console.log(data);
+                populateData(data);
+                
+              })
+              .catch(error => 
+              {
+                console.error('Error fetching file:', error);
+              });
+            //newDiva.innerHTML = data[v].substring(4) + "<hr>";
+            break;
+          }
+       }
+      }
+       function CopyPopsLink()
+       {
+          let elements = document.querySelectorAll('.poppers');
+          let poptext = "";
+          let confirmtext = "Wish to copy to clipboard?\n";
+          elements.forEach(element => 
+          {
+            if( element.value.length > 4 )
+            {
+              poptext += `$&POP${element.value}`
+              confirmtext += `${element.value}\n`
+            }
+          });
+          if( confirm(confirmtext) == true )
+          navigator.clipboard.writeText(`${window.location}#tagz${poptext}`)
+       }
 
 
   </script>
